@@ -1,0 +1,600 @@
+// /* eslint-disable @typescript-eslint/no-empty-function */
+import puppeteer from "puppeteer";
+import Model from "../../schema/scrapped-items.model";
+import _ from "underscore";
+import dailyJob from "../../schema/daily-job.model";
+import axios, { AxiosResponse } from "axios";
+import CategoryModel from "../../schema/category.model";
+import itemModel from "../../schema/item.model";
+import { similarity } from "../utils/similarity";
+import dailyJobModel from "../../schema/daily-job.model";
+import categoryModel from "../../schema/category.model";
+import { logger } from '../../config/logger';
+
+
+
+class Scrapping {
+  public async scrapCall(item) {
+    try {
+      const url = `https://hobbyist-scrapper.herokuapp.com/api/v1/scrap-item?item=${item}`;
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  public async ebayScrapping(item) {
+    try {
+      const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+      const page = await browser.newPage();
+      await page.goto("https://www.ebay.com/");
+      await page.waitForSelector("#gh-ac");
+      await page.type("#gh-ac", `${item}`);
+      await page.click('input[value="Search"]');
+
+      await page.waitForSelector("div.s-item__wrapper");
+
+      const link = await page.$$eval("img.s-item__image-img", (items) => {
+        return items.map((item: any) => {
+          return item.src;
+        });
+      });
+
+      const title = await page.$$eval("h3.s-item__title", (items) => {
+        return items.map((item: any) => {
+          return item.innerText;
+        });
+      });
+
+      const price = await page.$$eval("span.s-item__price", (items) => {
+        return items.map((item: any) => {
+          return item.innerText;
+        });
+      });
+
+      const invs = [];
+
+      for (let i = 0, length = 17; i < length; i++) {
+        const inv: any = {
+          price: this.priceToStr(price[i]),
+          title: title[i],
+        };
+        if (i < link.length) {
+          inv.link = link[i];
+          inv.baseCurrency = "$";
+          inv.date = new Date();
+        }
+        invs.push(inv);
+      }
+
+      return invs;
+    } catch (error) {
+      if (error instanceof puppeteer.errors.TimeoutError) {
+        return error.message;
+      }
+    }
+  }
+  public async ebayScrappingDaily(
+    itemId?: any,
+    user?: any,
+    id?: any,
+    item?: any
+  ) {
+    try {
+
+      const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+      const page = await browser.newPage();
+      await page.goto("https://www.ebay.com/");
+      await page.waitForSelector("#gh-ac");
+      await page.type("#gh-ac", `${item}`);
+      await page.click('input[value="Search"]');
+
+      await page.waitForSelector("div.s-item__wrapper");
+
+      const link = await page.$$eval("img.s-item__image-img", (items) => {
+        return items.map((item: any) => {
+          return item.src;
+        });
+      });
+
+      const title = await page.$$eval("h3.s-item__title", (items) => {
+        return items.map((item: any) => {
+          return item.innerText;
+        });
+      });
+
+      const price = await page.$$eval("span.s-item__price", (items) => {
+        return items.map((item: any) => {
+          return item.innerText;
+        });
+      });
+
+      const invs = [];
+
+      for (let i = 0, length = 17; i < length; i++) {
+        const inv: any = {
+          price: this.priceToStr(price[i]),
+          title: title[i],
+        };
+        if (i < link.length) {
+          inv.link = link[i];
+          inv.baseCurrency = "$";
+          inv.date = new Date();
+        }
+        invs.push(inv);
+      }
+
+      return invs;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  }
+  public async saveScrapItem(category, item_title, itemId, user) {
+
+    const same_data = await this.scrappingBee(item_title, itemId);
+    same_data.forEach(x => x.similarity = similarity(x.title,item_title))
+
+    let good_items = []
+    //add all similarity > 0.8, then keep on adding until count is greater than 30
+    for(const aitem of same_data){
+      if(aitem.similarity >= 0.8) good_items.push(aitem)
+    }
+    if(good_items.length == 0){
+      good_items = same_data.slice(0,30)
+    }
+    const similar_data = same_data.slice(good_items.length,same_data.length)
+
+    const average = await this.getAveragePrice(good_items);
+    const median = await this.getMedianPrice(good_items);
+    const {high, low} = await this.getHighLowPrice(same_data)
+
+    const createNewScrapItem = await Model.create({
+      _itemId: itemId,
+      _userId: user,
+      similar_data: similar_data,
+      same_data: same_data,
+      average,
+      median,
+      highest_price: high,
+      lowest_price: low,
+    });
+
+    if (createNewScrapItem) return true;
+  }
+  public async saveDailyJobSimilarItem() {
+
+    // const data = await Model.find({});
+
+    // const similar_data = data.map((item) => item.similar_data).flat()
+    const categories = await CategoryModel.find({});
+
+    const all_categories = categories[0].category
+
+
+    const items = [];
+
+    // seriously needs to be refactored
+    for (let i = 0; i < all_categories.length; i += 1) {
+      items.push(all_categories.slice(i, i + 1));
+    }
+    let response;
+    let offset = 0;
+
+    _(items).each((item) => {
+      setTimeout(() => {
+        item.forEach(async (category) => {
+          if (category) {
+            // console.log(item.title)
+            const data = await this.scrappingBeeDaily(category);
+
+            // data.forEach(el => el.similarity = similarity(el.title,item.title))
+
+            const average = await this.getAveragePrice(data);
+
+            const median = await this.getMedianPrice(data);
+
+            return await dailyJob.create({
+              median: median,
+              average: average,
+              category: category,
+              similar_data: data,
+            });
+          }
+          return response;
+        });
+      }, 25000 + offset);
+      offset += 25000;
+    });
+  }
+  public async saveDailyJobSameItem() {
+
+    const items_data = await itemModel.find({});
+    const same_data = items_data.map((item) => {
+      let item_keywords = item.item_keywords.filter(x=>x.toLowerCase() != item.item_title.toLowerCase())
+      let title = item.item_title
+      item_keywords.forEach(x=>title+=" "+x)
+      return {
+        title: title,
+        item: item._id,
+      }
+    })
+
+
+    const items = [];
+
+    for (let i = 0; i < same_data.length; i += 1) {
+      items.push(same_data.slice(i, i + 1));
+    }
+    let response;
+    let offset = 0;
+
+    _(items).each((item) => {
+      setTimeout(() => {
+        item.forEach(async (item) => {
+
+          if (item.title !== 'Shop on eBay') {
+            // console.log(item.title)
+            const data = await this.scrappingBeeDaily(item.title, item.item);
+
+            data.forEach(el => el.similarity = similarity(el.title,item.title))
+
+            let same_data = data
+            let good_items = []
+            //add all similarity > 0.8, then keep on adding until count is greater than 30
+            for(const aitem of same_data){
+              if(aitem.similarity >= 0.8) good_items.push(aitem)
+            }
+            if(good_items.length == 0){
+              good_items = same_data.slice(0,30)
+            }
+
+            const average = await this.getAveragePrice(good_items);
+
+            const median = await this.getMedianPrice(good_items);
+
+            const {high, low} = await this.getHighLowPrice(good_items)
+             
+
+            return await dailyJob.create({
+              _scrapId: item.item,
+              median: median,
+              average: average,
+              same_data: data,
+              lowest_price: low,
+              highest_price: high,
+            });
+          }
+          return response;
+        });
+      }, 25000 + offset);
+      offset += 25000;
+    });
+  }
+  public async cleanDailyJobsCategories() {
+    try {
+      let categories = await categoryModel.find({});
+      categories = categories[0].category
+      // For each item, find all daily-jobs that have the item's id
+      for (const category of categories) {
+        let dailyJobs = await dailyJobModel.find({ category: category })?.sort({ createdAt: -1 })
+  
+      //   Delete the title and link of all but the most recent daily-job
+    dailyJobs = dailyJobs.slice(0,4)
+        for (let i = 2; i < dailyJobs.length; i++) {
+          if(!(dailyJobs[i].same_data && dailyJobs[i].similar_data)){
+              continue
+          }
+          await dailyJobModel.updateOne({ _id: dailyJobs[i]._id }, { $unset: { same_data: '', similar_data: '' } });
+
+        }
+
+      }
+    } catch (err) {
+    logger.error(err.message);
+    } 
+  };
+  
+  public async cleanDailyJobsItems() {
+
+    try {
+  
+      // Find all items that belong to the user
+      // const items = await db.collection('items').find({ _userId: user._id }).toArray();
+      const items = await itemModel.find({})
+      // For each item, find all daily-jobs that have the item's id
+      for (const item of items) {
+        let dailyJobs = await dailyJobModel.find({ _scrapId: item._id })?.sort({ createdAt: -1 });
+
+      //   Delete the title and link of all but the most recent daily-job
+    dailyJobs = dailyJobs.slice(0,4)
+        for (let i = 2; i < dailyJobs.length; i++) {
+          if(!(dailyJobs[i].same_data && dailyJobs[i].similar_data)){
+              continue
+          }
+          await dailyJobModel.updateOne({ _id: dailyJobs[i]._id }, { $unset: { same_data: '', similar_data: '' } });
+  
+        }
+      }
+    } catch (err) {
+    logger.error(err.message);
+    } 
+  };
+
+
+  public async priceToStr(price) {
+    if (price && price?.includes("to")) {
+      const lomerImit = price
+        .split("$").join("")
+        .replace("to", "").replace(",","")
+        .split(" ")[0];
+      const upperLimit = price
+      .split("$").join("")
+        .replace("to", "").replace(",","")
+        .split(" ")[1];
+      const avgPrice = (parseFloat(lomerImit) + parseFloat(upperLimit)) / 2;
+      return !avgPrice ? lomerImit : avgPrice;
+    } else {
+      return parseFloat(price?.replace("$", "").replace(",",""));
+    }
+  }
+  public async getMedianPrice(items) {
+    if(!items) return null
+    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+
+    //use only items with high enough similarity
+    items.sort((a,b)=>b.similarity - a.similarity) //sort high similarity to low
+    let count = 0
+    const good_items = []
+    //add all similarity > 0.8, then keep on adding until count is greater than 30
+    for(const item of items){
+      count++
+      if(item.similarity >= 0.8) good_items.push(item)
+      else if(count <= 30) good_items.push(item) 
+      else{
+        break
+      }
+    }
+    // console.log('medd')
+    // console.log(_.sortBy(good_items.map((item) => parseFloat(item.price)))[Math.floor(good_items.length / 2)])
+    // good_items.forEach(x => delete x.url && delete x.date && delete x.link && delete x.item)
+    // console.log(good_items)
+
+    return _.sortBy(good_items.map((item) => parseFloat(item.price)))[Math.floor(good_items.length / 2)]
+  }
+  //take similarity into account
+  public async getAveragePrice(items) {
+    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+    items.sort((a,b)=>b.similarity - a.similarity) //sort high similarity to low
+    let count = 0
+    let sum=0
+    //add all similarity > 0.8, then keep on adding until count is greater than 30
+    for(const item of items){
+      count++
+      if(item.similarity >= 0.8) sum += parseFloat(item.price)
+      else if(count <= 30) sum += parseFloat(item.price)
+      else{
+        break
+      }
+    }
+    return sum/count
+  }
+
+  public async getHighLowPrice(items){
+    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+    items.sort((a,b) => b.similarity - a.similarity)
+    const good_items = []
+    let count = 0
+    for(const item of items){
+      count++
+      if(item.similarity >= 0.8) good_items.push(item)
+      else if(count <= 30) good_items.push(item) 
+      else{
+        break
+      }
+    }
+    good_items.sort((a,b)=>b.price - a.price)
+    const high = good_items[0].price
+    const low = good_items[good_items.length-1].price
+    return {low, high}
+  }
+
+  public async scrappingBee(item, id) {
+    console.log(item);
+    const url = item.split(" ").join("+")
+
+
+    try {
+      const { data } = await axios.get("https://app.scrapingbee.com/api/v1", {
+        params: {
+          api_key:
+            "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
+          url: `https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=${url}&_sacat=0`,
+          // Wait for there to be at least one
+          // non-empty .event-tile element
+          wait_for: ".s-item",
+          extract_rules: {
+            data: {
+              // Lets create a list with data
+              // extracted from the .event-tile element
+              selector: ".s-item",
+              type: "list",
+              // Each object in the list should
+              output: {
+                // have a title lifted from
+                // the .event-tile__title element
+                price: ".s-item__price",
+                title: ".s-item__title",
+                link: {
+                  selector: ".s-item__image-wrapper img",
+                  output: "@src",
+                },
+                url: {
+                  selector: ".s-item__link",
+                  output: "@href"
+                }
+
+              },
+            },
+          },
+        },
+      });
+
+      const response = data.data;
+
+      const invs = [];
+
+      await response.map(async (item) => {
+        if (item) {
+          const inv: any = {
+            price: await this.priceToStr(item.price),
+            title: item.title,
+          };
+          if (item.link) {
+            inv.link = item.link;
+            inv.baseCurrency = "$";
+            inv.date = new Date();
+            inv.url = item.url
+            inv.item = id
+          }
+          invs.push(inv);
+        }
+      });
+      return invs.slice(0,100);
+    } catch (error) {
+      throw new Error("ScrapingBee Error: " + error.message);
+    }
+  }
+  public async scrappingBeeDaily(items, id = null) {
+    const url = items.split(" ").join("+")
+    try {
+      const { data } = await axios.get("https://app.scrapingbee.com/api/v1", {
+        params: {
+          api_key:
+            "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
+          url: `https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=${url}&_sacat=0`,
+          // Wait for there to be at least one
+          // non-empty .event-tile element
+          wait_for: ".s-item",
+          extract_rules: {
+            data: {
+              // Lets create a list with data
+              // extracted from the .event-tile element
+              selector: ".s-item",
+              type: "list",
+              // Each object in the list should
+              output: {
+                // have a title lifted from
+                // the .event-tile__title element
+                price: ".s-item__price",
+                title: ".s-item__title",
+                link: {
+                  selector: ".s-item__image-wrapper img",
+                  output: "@src",
+                },
+                url: {
+                  selector: ".s-item__link",
+                  output: "@href"
+                }
+              },
+            },
+          },
+        },
+      });
+
+      const response = data.data;
+      const invs = [];
+
+      await response.map(async (item) => {
+        if (item) {
+          const inv: any = {
+            price: await this.priceToStr(item.price),
+            title: item.title,
+          };
+          if (item.link) {
+            inv.link = item.link;
+            inv.baseCurrency = "$";
+            inv.date = new Date();
+            inv.url = item.url
+            inv.category = items
+            inv.item = id
+          }
+          invs.push(inv);
+        }
+      });
+      return invs.slice(0,100);
+    } catch (error) {
+      console.log(error)
+      throw new Error("ScrapingBee Error: " + error.message);
+    }
+  }
+  public async testing(id) {
+    console.log('testing...')
+    let items_data = await itemModel.find({});
+    console.log('asdfasdf')
+    console.log(items_data.length)
+    items_data = items_data.filter(x=>x._id==id)
+    if(items_data.length > 1 || items_data.length ==0){
+      console.log('fail asdfss')
+      console.log(items_data.length)
+      return
+    }
+    console.log('whhhhaaat')
+    // console.log(items_data)
+    // console.log(items_data[0])
+    const same_data = items_data.map((item) => {
+      let item_keywords = item.item_keywords.filter(x=>x.toLowerCase() != item.item_title.toLocaleLowerCase())
+      let title = item.item_title
+      item_keywords.forEach(x=>title+=" "+x)
+      return {
+        title: title,
+        item: item._id,
+      }
+    })
+
+
+    const items = [];
+
+    for (let i = 0; i < same_data.length; i += 1) {
+      items.push(same_data.slice(i, i + 1));
+    }
+    let response;
+    let offset = 0;
+
+    _(items).each((item) => {
+      // setTimeout(() => {
+        item.forEach(async (item) => {
+
+          if (item.title !== 'Shop on eBay') {
+            // console.log(item.title)
+            const data = await this.scrappingBeeDaily(item.title, item.item);
+
+            // console.log(data)
+
+            data.forEach(el => el.similarity = similarity(el.title,item.title))
+
+            const average = await this.getAveragePrice(data);
+
+            const median = await this.getMedianPrice(data);
+
+            const {high, low} = await this.getHighLowPrice(data)
+             
+console.log('creating')
+            return await dailyJob.create({
+              _scrapId: item.item,
+              median: median,
+              average: average,
+              same_data: data,
+              lowest_price: low,
+              highest_price: high,
+            });
+          }
+          return response;
+        });
+      });
+      // offset += 25000;
+    // });
+  }
+}
+
+export { Scrapping };
