@@ -10,10 +10,14 @@ import { similarity } from "../utils/similarity";
 import dailyJobModel from "../../schema/daily-job.model";
 import categoryModel from "../../schema/category.model";
 import { logger } from '../../config/logger';
-
+import EBay from './ebay'
+import Scarce from './scarce'
 
 
 class Scrapping {
+  ebay = new EBay()
+  scarce = new Scarce()
+  /*
   public async scrapCall(item) {
     try {
       const url = `https://hobbyist-scrapper.herokuapp.com/api/v1/scrap-item?item=${item}`;
@@ -74,6 +78,7 @@ class Scrapping {
       }
     }
   }
+  
   public async ebayScrappingDaily(
     itemId?: any,
     user?: any,
@@ -130,24 +135,25 @@ class Scrapping {
       throw new Error(error.message);
     }
   }
+  */
   public async saveScrapItem(category, item_title, itemId, user) {
 
     const same_data = await this.scrappingBee(item_title, itemId);
-    same_data.forEach(x => x.similarity = similarity(x.title,item_title))
+    same_data.forEach(x => x.similarity = similarity(x.title, item_title))
 
     let good_items = []
     //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for(const aitem of same_data){
-      if(aitem.similarity >= 0.8) good_items.push(aitem)
+    for (const aitem of same_data) {
+      if (aitem.similarity >= 0.8) good_items.push(aitem)
     }
-    if(good_items.length == 0){
-      good_items = same_data.slice(0,30)
+    if (good_items.length == 0) {
+      good_items = same_data.slice(0, 30)
     }
-    const similar_data = same_data.slice(good_items.length,same_data.length)
+    const similar_data = same_data.slice(good_items.length, same_data.length)
 
     const average = await this.getAveragePrice(good_items);
     const median = await this.getMedianPrice(good_items);
-    const {high, low} = await this.getHighLowPrice(same_data)
+    const { high, low } = await this.getHighLowPrice(same_data)
 
     const createNewScrapItem = await Model.create({
       _itemId: itemId,
@@ -211,9 +217,9 @@ class Scrapping {
 
     const items_data = await itemModel.find({});
     const same_data = items_data.map((item) => {
-      let item_keywords = item.item_keywords.filter(x=>x.toLowerCase() != item.item_title.toLowerCase())
+      let item_keywords = item.item_keywords.filter(x => x.toLowerCase() != item.item_title.toLowerCase())
       let title = item.item_title
-      item_keywords.forEach(x=>title+=" "+x)
+      item_keywords.forEach(x => title += " " + x)
       return {
         title: title,
         item: item._id,
@@ -237,24 +243,24 @@ class Scrapping {
             // console.log(item.title)
             const data = await this.scrappingBeeDaily(item.title, item.item);
 
-            data.forEach(el => el.similarity = similarity(el.title,item.title))
+            data.forEach(el => el.similarity = similarity(el.title, item.title))
 
             let same_data = data
             let good_items = []
             //add all similarity > 0.8, then keep on adding until count is greater than 30
-            for(const aitem of same_data){
-              if(aitem.similarity >= 0.8) good_items.push(aitem)
+            for (const aitem of same_data) {
+              if (aitem.similarity >= 0.8) good_items.push(aitem)
             }
-            if(good_items.length == 0){
-              good_items = same_data.slice(0,30)
+            if (good_items.length == 0) {
+              good_items = same_data.slice(0, 30)
             }
 
             const average = await this.getAveragePrice(good_items);
 
             const median = await this.getMedianPrice(good_items);
 
-            const {high, low} = await this.getHighLowPrice(good_items)
-             
+            const { high, low } = await this.getHighLowPrice(good_items)
+
 
             return await dailyJob.create({
               _scrapId: item.item,
@@ -278,12 +284,12 @@ class Scrapping {
       // For each item, find all daily-jobs that have the item's id
       for (const category of categories) {
         let dailyJobs = await dailyJobModel.find({ category: category })?.sort({ createdAt: -1 })
-  
-      //   Delete the title and link of all but the most recent daily-job
-    dailyJobs = dailyJobs.slice(0,4)
+
+        //   Delete the title and link of all but the most recent daily-job
+        dailyJobs = dailyJobs.slice(0, 4)
         for (let i = 2; i < dailyJobs.length; i++) {
-          if(!(dailyJobs[i].same_data && dailyJobs[i].similar_data)){
-              continue
+          if (!(dailyJobs[i].same_data && dailyJobs[i].similar_data)) {
+            continue
           }
           await dailyJobModel.updateOne({ _id: dailyJobs[i]._id }, { $unset: { same_data: '', similar_data: '' } });
 
@@ -291,14 +297,14 @@ class Scrapping {
 
       }
     } catch (err) {
-    logger.error(err.message);
-    } 
+      logger.error(err.message);
+    }
   };
-  
+
   public async cleanDailyJobsItems() {
 
     try {
-  
+
       // Find all items that belong to the user
       // const items = await db.collection('items').find({ _userId: user._id }).toArray();
       const items = await itemModel.find({})
@@ -306,52 +312,35 @@ class Scrapping {
       for (const item of items) {
         let dailyJobs = await dailyJobModel.find({ _scrapId: item._id })?.sort({ createdAt: -1 });
 
-      //   Delete the title and link of all but the most recent daily-job
-    dailyJobs = dailyJobs.slice(0,4)
+        //   Delete the title and link of all but the most recent daily-job
+        dailyJobs = dailyJobs.slice(0, 4)
         for (let i = 2; i < dailyJobs.length; i++) {
-          if(!(dailyJobs[i].same_data && dailyJobs[i].similar_data)){
-              continue
+          if (!(dailyJobs[i].same_data && dailyJobs[i].similar_data)) {
+            continue
           }
           await dailyJobModel.updateOne({ _id: dailyJobs[i]._id }, { $unset: { same_data: '', similar_data: '' } });
-  
+
         }
       }
     } catch (err) {
-    logger.error(err.message);
-    } 
+      logger.error(err.message);
+    }
   };
 
-
-  public async priceToStr(price) {
-    if (price && price?.includes("to")) {
-      const lomerImit = price
-        .split("$").join("")
-        .replace("to", "").replace(",","")
-        .split(" ")[0];
-      const upperLimit = price
-      .split("$").join("")
-        .replace("to", "").replace(",","")
-        .split(" ")[1];
-      const avgPrice = (parseFloat(lomerImit) + parseFloat(upperLimit)) / 2;
-      return !avgPrice ? lomerImit : avgPrice;
-    } else {
-      return parseFloat(price?.replace("$", "").replace(",",""));
-    }
-  }
   public async getMedianPrice(items) {
-    if(!items) return null
-    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+    if (!items) return null
+    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
 
     //use only items with high enough similarity
-    items.sort((a,b)=>b.similarity - a.similarity) //sort high similarity to low
+    items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
     let count = 0
     const good_items = []
     //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for(const item of items){
+    for (const item of items) {
       count++
-      if(item.similarity >= 0.8) good_items.push(item)
-      else if(count <= 30) good_items.push(item) 
-      else{
+      if (item.similarity >= 0.8) good_items.push(item)
+      else if (count <= 30) good_items.push(item)
+      else {
         break
       }
     }
@@ -364,177 +353,55 @@ class Scrapping {
   }
   //take similarity into account
   public async getAveragePrice(items) {
-    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
-    items.sort((a,b)=>b.similarity - a.similarity) //sort high similarity to low
+    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+    items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
     let count = 0
-    let sum=0
+    let sum = 0
     //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for(const item of items){
+    for (const item of items) {
       count++
-      if(item.similarity >= 0.8) sum += parseFloat(item.price)
-      else if(count <= 30) sum += parseFloat(item.price)
-      else{
+      if (item.similarity >= 0.8) sum += parseFloat(item.price)
+      else if (count <= 30) sum += parseFloat(item.price)
+      else {
         break
       }
     }
-    return sum/count
+    return sum / count
   }
 
-  public async getHighLowPrice(items){
-    if(items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
-    items.sort((a,b) => b.similarity - a.similarity)
+  public async getHighLowPrice(items) {
+    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
+    items.sort((a, b) => b.similarity - a.similarity)
     const good_items = []
     let count = 0
-    for(const item of items){
+    for (const item of items) {
       count++
-      if(item.similarity >= 0.8) good_items.push(item)
-      else if(count <= 30) good_items.push(item) 
-      else{
+      if (item.similarity >= 0.8) good_items.push(item)
+      else if (count <= 30) good_items.push(item)
+      else {
         break
       }
     }
-    good_items.sort((a,b)=>b.price - a.price)
+    good_items.sort((a, b) => b.price - a.price)
     const high = good_items[0].price
-    const low = good_items[good_items.length-1].price
-    return {low, high}
+    const low = good_items[good_items.length - 1].price
+    return { low, high }
   }
 
-  public async scrappingBee(item, id) {
-    console.log(item);
-    const url = item.split(" ").join("+")
-
-
-    try {
-      const { data } = await axios.get("https://app.scrapingbee.com/api/v1", {
-        params: {
-          api_key:
-            "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-          url: `https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=${url}&_sacat=0`,
-          // Wait for there to be at least one
-          // non-empty .event-tile element
-          wait_for: ".s-item",
-          extract_rules: {
-            data: {
-              // Lets create a list with data
-              // extracted from the .event-tile element
-              selector: ".s-item",
-              type: "list",
-              // Each object in the list should
-              output: {
-                // have a title lifted from
-                // the .event-tile__title element
-                price: ".s-item__price",
-                title: ".s-item__title",
-                link: {
-                  selector: ".s-item__image-wrapper img",
-                  output: "@src",
-                },
-                url: {
-                  selector: ".s-item__link",
-                  output: "@href"
-                }
-
-              },
-            },
-          },
-        },
-      });
-
-      const response = data.data;
-
-      const invs = [];
-
-      await response.map(async (item) => {
-        if (item) {
-          const inv: any = {
-            price: await this.priceToStr(item.price),
-            title: item.title,
-          };
-          if (item.link) {
-            inv.link = item.link;
-            inv.baseCurrency = "$";
-            inv.date = new Date();
-            inv.url = item.url
-            inv.item = id
-          }
-          invs.push(inv);
-        }
-      });
-      return invs.slice(0,100);
-    } catch (error) {
-      throw new Error("ScrapingBee Error: " + error.message);
-    }
-  }
-  public async scrappingBeeDaily(items, id = null) {
-    const url = items.split(" ").join("+")
-    try {
-      const { data } = await axios.get("https://app.scrapingbee.com/api/v1", {
-        params: {
-          api_key:
-            "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-          url: `https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=${url}&_sacat=0`,
-          // Wait for there to be at least one
-          // non-empty .event-tile element
-          wait_for: ".s-item",
-          extract_rules: {
-            data: {
-              // Lets create a list with data
-              // extracted from the .event-tile element
-              selector: ".s-item",
-              type: "list",
-              // Each object in the list should
-              output: {
-                // have a title lifted from
-                // the .event-tile__title element
-                price: ".s-item__price",
-                title: ".s-item__title",
-                link: {
-                  selector: ".s-item__image-wrapper img",
-                  output: "@src",
-                },
-                url: {
-                  selector: ".s-item__link",
-                  output: "@href"
-                }
-              },
-            },
-          },
-        },
-      });
-
-      const response = data.data;
-      const invs = [];
-
-      await response.map(async (item) => {
-        if (item) {
-          const inv: any = {
-            price: await this.priceToStr(item.price),
-            title: item.title,
-          };
-          if (item.link) {
-            inv.link = item.link;
-            inv.baseCurrency = "$";
-            inv.date = new Date();
-            inv.url = item.url
-            inv.category = items
-            inv.item = id
-          }
-          invs.push(inv);
-        }
-      });
-      return invs.slice(0,100);
-    } catch (error) {
-      console.log(error)
-      throw new Error("ScrapingBee Error: " + error.message);
-    }
-  }
+  public async scrappingBee(item, id = null) {
+    let result: any = []
+    result.push(...(await this.scarce.getScarceData(item, id)))
+    console.log(result.length)
+    return result.slice(0, 100)
+}
+/*
   public async testing(id) {
     console.log('testing...')
     let items_data = await itemModel.find({});
     console.log('asdfasdf')
     console.log(items_data.length)
-    items_data = items_data.filter(x=>x._id==id)
-    if(items_data.length > 1 || items_data.length ==0){
+    items_data = items_data.filter(x => x._id == id)
+    if (items_data.length > 1 || items_data.length == 0) {
       console.log('fail asdfss')
       console.log(items_data.length)
       return
@@ -543,9 +410,9 @@ class Scrapping {
     // console.log(items_data)
     // console.log(items_data[0])
     const same_data = items_data.map((item) => {
-      let item_keywords = item.item_keywords.filter(x=>x.toLowerCase() != item.item_title.toLocaleLowerCase())
+      let item_keywords = item.item_keywords.filter(x => x.toLowerCase() != item.item_title.toLocaleLowerCase())
       let title = item.item_title
-      item_keywords.forEach(x=>title+=" "+x)
+      item_keywords.forEach(x => title += " " + x)
       return {
         title: title,
         item: item._id,
@@ -563,38 +430,38 @@ class Scrapping {
 
     _(items).each((item) => {
       // setTimeout(() => {
-        item.forEach(async (item) => {
+      item.forEach(async (item) => {
 
-          if (item.title !== 'Shop on eBay') {
-            // console.log(item.title)
-            const data = await this.scrappingBeeDaily(item.title, item.item);
+        if (item.title !== 'Shop on eBay') {
+          // console.log(item.title)
+          const data = await this.scrappingBeeDaily(item.title, item.item);
 
-            // console.log(data)
+          // console.log(data)
 
-            data.forEach(el => el.similarity = similarity(el.title,item.title))
+          data.forEach(el => el.similarity = similarity(el.title, item.title))
 
-            const average = await this.getAveragePrice(data);
+          const average = await this.getAveragePrice(data);
 
-            const median = await this.getMedianPrice(data);
+          const median = await this.getMedianPrice(data);
 
-            const {high, low} = await this.getHighLowPrice(data)
-             
-console.log('creating')
-            return await dailyJob.create({
-              _scrapId: item.item,
-              median: median,
-              average: average,
-              same_data: data,
-              lowest_price: low,
-              highest_price: high,
-            });
-          }
-          return response;
-        });
+          const { high, low } = await this.getHighLowPrice(data)
+
+          console.log('creating')
+          return await dailyJob.create({
+            _scrapId: item.item,
+            median: median,
+            average: average,
+            same_data: data,
+            lowest_price: low,
+            highest_price: high,
+          });
+        }
+        return response;
       });
-      // offset += 25000;
+    });
+    // offset += 25000;
     // });
   }
+*/
 }
-
 export { Scrapping };

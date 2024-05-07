@@ -2,3 +2,10 @@ Backend/node_modules
 Backend/dist
 Backend/app-logs.log
 Backend/.env
+node_modules
+
+android/.gradle
+android/.idea
+android/build
+android/app/build
+package-lock.json

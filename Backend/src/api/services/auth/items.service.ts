@@ -447,8 +447,6 @@ export class ItemService {
     const { itemId, type } = data;
 
     if (type === "items") {
-
-
       const findItems = await DailyItemModel.find({ _scrapId: itemId });
       console.log(findItems.length);
       const findItem: any = await ScrapModel.find({ _itemId: itemId })
