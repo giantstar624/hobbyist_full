@@ -39,6 +39,7 @@ import {SectionDivider} from '../../account-mgmt/components/account.mgmt.styles'
 import SelectDropdown from 'react-native-select-dropdown';
 import {Spacer} from '../../../components/utility/spacer';
 import {getItemListStart} from '../../../services/items/item.action';
+import { BASE_URL } from '../../../config';
 
 // import {View} from 'react-native';
 
@@ -85,7 +86,7 @@ const HomeScreen: FC<Props> = ({navigation}) => {
   const getItems = async () => {
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/items-list';
+      `${BASE_URL}/api/v1/items-list`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const HomeScreen: FC<Props> = ({navigation}) => {
   const getUser = async () => {
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-user';
+      `${BASE_URL}/api/v1/get-user`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',

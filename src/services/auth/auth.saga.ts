@@ -9,11 +9,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {authTypes} from './auth.types';
 import axios from 'axios';
+import { BASE_URL } from '../../config';
 
 const SIGNUP_URL =
-  'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/signup';
+  `${BASE_URL}/api/v1/signup`;
 const LOGIN_URL =
-  'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/signin';
+  `${BASE_URL}/api/v1/signin`;
 // Existing uer login credentials
 export function* userLogin({payload: {email, password}}: loginStartType) {
   try {

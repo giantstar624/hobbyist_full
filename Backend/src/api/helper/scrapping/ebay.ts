@@ -77,7 +77,7 @@ class Scrapping {
                     invs.push(inv);
                 }
             });
-            return invs;
+            return invs.slice(0,100);
         } catch (error) {
             throw new Error("ScrapingBee Error: " + error.message);
         }

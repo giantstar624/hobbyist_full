@@ -46,6 +46,7 @@ import {Loading} from './../../auth/components/register.styles';
 import Pouse from '../../../../assets/pouse.png';
 import User from '../../../../assets/user.png';
 import X from '../../../../assets/x.png';
+import { BASE_URL } from '../../../config';
 
 interface Props {
   navigation: any;
@@ -66,7 +67,7 @@ const ProfileScreen: FC<Props> = ({navigation}) => {
   const getUser = async () => {
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-user';
+      `${BASE_URL}/api/v1/get-user`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ const ProfileScreen: FC<Props> = ({navigation}) => {
     setIsLoadin(true);
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/delete-user';
+      `${BASE_URL}/api/v1/delete-user`;
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -120,7 +121,7 @@ const ProfileScreen: FC<Props> = ({navigation}) => {
     setIsLoadin(true);
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/edit-user';
+      `${BASE_URL}/api/v1/edit-user`;
     const response = await fetch(url, {
       method: 'PUT',
       headers: {

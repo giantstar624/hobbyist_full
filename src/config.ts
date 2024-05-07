@@ -1,0 +1,1 @@
+export const BASE_URL = 'http://ec2-54-237-0-170.compute-1.amazonaws.com:8080'

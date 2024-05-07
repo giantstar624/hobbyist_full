@@ -56,6 +56,7 @@ import {Spacer} from '../../../components/utility/spacer';
 import UserTier from '../../../../assets/user-tier.png';
 import {Wrapper} from '../../../components/utility/wrapperContainer';
 import X from '../../../../assets/x.png';
+import { BASE_URL } from '../../../config';
 
 // import {configureStore} from '@reduxjs/toolkit';
 
@@ -95,7 +96,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
   };
   const getSimilarItems = async () => {
     const token = await AsyncStorage.getItem('token');
-    var apiUrl = `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-similar-item/${item._id}`;
+    var apiUrl = `${BASE_URL}/api/v1/get-similar-item/${item._id}`;
 
     var headers = {
       Accept: 'application/json',
@@ -146,7 +147,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
       mimeType: `image/${fileType}`,
     });
     const imageUploadRes = await fetch(
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/item-image',
+      `${BASE_URL}/api/v1/item-image`,
       {
         method: 'POST',
         headers: {
@@ -165,7 +166,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
       // console.log(uploadImageUrl.item_image);
       // console.log(item._id);
       const editImageRes = await fetch(
-        `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/edit-item/${item._id}`,
+        `${BASE_URL}/api/v1/edit-item/${item._id}`,
         {
           method: 'PUT',
           headers: {
@@ -195,7 +196,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
     setIsEditDesc(false);
     const token = await AsyncStorage.getItem('token');
     const editImageRes = await fetch(
-      `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/edit-item/${item._id}`,
+      `${BASE_URL}/api/v1/edit-item/${item._id}`,
       {
         method: 'PUT',
         headers: {
@@ -220,7 +221,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
     setIsEditTitle(false);
     const token = await AsyncStorage.getItem('token');
     const editImageRes = await fetch(
-      `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/edit-item/${item._id}`,
+      `${BASE_URL}/api/v1/edit-item/${item._id}`,
       {
         method: 'PUT',
         headers: {
@@ -243,7 +244,7 @@ const JobDetailScreen: FC<Props> = ({navigation, route}) => {
   const getUser = async () => {
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-user';
+      `${BASE_URL}/api/v1/get-user`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',

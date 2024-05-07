@@ -1,3 +1,4 @@
+import { BASE_URL } from './../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
@@ -113,7 +114,7 @@ const useInAppPurchase = () => {
   const setTierRole = async (role: string) => {
     const token = await AsyncStorage.getItem('token');
     const apiUrl =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/set-role';
+      `${BASE_URL}/api/v1/set-role`;
 
     const headers = {
       Accept: 'application/json',

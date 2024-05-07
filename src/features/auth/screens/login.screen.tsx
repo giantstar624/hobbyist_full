@@ -42,6 +42,7 @@ import LogoIcon from '../../../../assets/logo.png';
 import {Switch} from 'react-native';
 import UserIcon from '../../../../assets/user-icon.png';
 import UserItem from '../../../../assets/user-items.png';
+import { BASE_URL } from '../../../config';
 
 // import {loginStart} from '../../../services/auth/auth.action';
 // import {useDispatch} from 'react-redux';
@@ -73,7 +74,7 @@ const LoginScreen: FC<Props> = ({navigation}: Props) => {
     if (checked) {
       setIsLoadin(true);
       const response = await fetch(
-        'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/signin',
+        `${BASE_URL}/api/v1/signin`,
         {
           method: 'POST',
           headers: {
@@ -103,9 +104,10 @@ const LoginScreen: FC<Props> = ({navigation}: Props) => {
         }
       }
     } else {
+      console.log(BASE_URL)
       setIsLoadin(true);
       const response = await fetch(
-        'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/signin',
+        `${BASE_URL}/api/v1/signin`,
         {
           method: 'POST',
           headers: {

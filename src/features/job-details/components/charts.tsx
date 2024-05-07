@@ -35,6 +35,7 @@ import {Spacer} from '../../../components/utility/spacer';
 import {Text} from 'react-native';
 import {View} from 'react-native';
 import {parse} from 'react-native-svg';
+import { BASE_URL } from '../../../config';
 
 const getWidth = Dimensions.get('window').width;
 const today = new Date();
@@ -71,8 +72,8 @@ const Chart: FC<Props> = ({onItem, onCat, item_id, user, navigation, fullitem}) 
     // setItemLength()
     const token = await AsyncStorage.getItem('token');
     const id = item_id;
-    var itemApiUrl = `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-daily-items/${id}?type=items`;
-    var catApiUrl = `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-daily-items/${id}?type=categories`;
+    var itemApiUrl = `${BASE_URL}/api/v1/get-daily-items/${id}?type=items`;
+    var catApiUrl = `${BASE_URL}/api/v1/get-daily-items/${id}?type=categories`;
 
     var headers = {
       Accept: 'application/json',

@@ -40,6 +40,7 @@ import X from '../../../../assets/x.png';
 import {addItemStart} from '../../../services/items/item.action';
 import apiInstance from '../../../axios';
 import {useNavigation} from '@react-navigation/native';
+import { BASE_URL } from '../../../config';
 
 interface Props {
   navigation: any;
@@ -102,7 +103,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
     });
     console.log(imagePath.split('/').pop());
     const imageUploadRes = await fetch(
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/item-image',
+      `${BASE_URL}/api/v1/item-image`,
       {
         method: 'POST',
         headers: {
@@ -124,7 +125,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
   const getCategories = async () => {
     const token = await AsyncStorage.getItem('token');
     var apiUrl =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/get-category';
+      `${BASE_URL}/api/v1/get-category`;
 
     var headers = {
       Accept: 'application/json',
@@ -148,7 +149,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
   const addCategory = async () => {
     const token = await AsyncStorage.getItem('token');
     var apiUrl =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/add-category';
+      `${BASE_URL}/api/v1/add-category`;
 
     var headers = {
       Accept: 'application/json',
@@ -169,7 +170,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
   const scrapItem = async (id: any) => {
     const token = await AsyncStorage.getItem('token');
     var apiUrl =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/scrap-item';
+      `${BASE_URL}/api/v1/scrap-item`;
     console.log('item id');
     console.log(id);
     var headers = {
@@ -196,7 +197,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
       setIsLoading(true);
       const token = await AsyncStorage.getItem('token');
       var apiUrl =
-        'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/add-item';
+        `${BASE_URL}/api/v1/add-item`;
 
       var headers = {
         Accept: 'application/json',
@@ -241,7 +242,7 @@ const AddJobItem: FC<Props> = ({navigation}) => {
       setIsLoading(true);
       const token = await AsyncStorage.getItem('token');
       var apiUrl =
-        'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/add-item';
+        `${BASE_URL}/api/v1/add-item`;
 
       var headers = {
         Accept: 'application/json',

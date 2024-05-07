@@ -36,6 +36,7 @@ import {SafeView} from '../../../components/utility/safeAreaView.component';
 import {SectionDivider} from '../../account-mgmt/components/account.mgmt.styles';
 import {Spacer} from '../../../components/utility/spacer';
 import X from '../../../../assets/x.png';
+import { BASE_URL } from '../../../config';
 
 // import {useDispatch, useSelector} from 'react-redux';
 
@@ -60,7 +61,7 @@ const RemoveItem: FC<Props> = ({navigation}) => {
   const getItems = async () => {
     const token = await AsyncStorage.getItem('token');
     var url =
-      'http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/items-list';
+      `${BASE_URL}/api/v1/items-list`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const RemoveItem: FC<Props> = ({navigation}) => {
   };
   const handleDelete = async (id: string) => {
     const token = await AsyncStorage.getItem('token');
-    var url = `http://ec2-3-87-94-46.compute-1.amazonaws.com:8080/api/v1/delete-item/${id}`;
+    var url = `${BASE_URL}/api/v1/delete-item/${id}`;
     var headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',

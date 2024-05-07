@@ -1,7 +1,7 @@
 // /* eslint-disable @typescript-eslint/no-empty-function */
 import puppeteer from "puppeteer";
 import Model from "../../schema/scrapped-items.model";
-import _ from "underscore";
+import _, { sortBy } from "underscore";
 import dailyJob from "../../schema/daily-job.model";
 import axios, { AxiosResponse } from "axios";
 import CategoryModel from "../../schema/category.model";
@@ -390,8 +390,9 @@ class Scrapping {
 
   public async scrappingBee(item, id = null) {
     let result: any = []
+    result.push(...(await this.ebay.getEbayData(item, id)))
     result.push(...(await this.scarce.getScarceData(item, id)))
-    console.log(result.length)
+    result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
 }
 /*
