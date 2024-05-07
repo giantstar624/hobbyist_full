@@ -192,7 +192,7 @@ class Scrapping {
         item.forEach(async (category) => {
           if (category) {
             // console.log(item.title)
-            const data = await this.scrappingBeeDaily(category);
+            const data = await this.scrappingBee(category);
 
             // data.forEach(el => el.similarity = similarity(el.title,item.title))
 
@@ -241,7 +241,7 @@ class Scrapping {
 
           if (item.title !== 'Shop on eBay') {
             // console.log(item.title)
-            const data = await this.scrappingBeeDaily(item.title, item.item);
+            const data = await this.scrappingBee(item.title, item.item);
 
             data.forEach(el => el.similarity = similarity(el.title, item.title))
 
