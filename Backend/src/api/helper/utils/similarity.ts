@@ -51,15 +51,15 @@ const test = ()=>{
 
 
 //test a daily scrape
-const test_scrape = ()=>{
+// const test_scrape = ()=>{
 
 
-    // connectDatabase()
-    let id = '62ea8ecd5cf90b24dcfee9e0'
-    const scrap = new Scrapping()
-    scrap.testing(id)
+//     // connectDatabase()
+//     let id = '62ea8ecd5cf90b24dcfee9e0'
+//     const scrap = new Scrapping()
+//     scrap.testing(id)
 
-}
+// }
 // test()
 
 export {similarity}
