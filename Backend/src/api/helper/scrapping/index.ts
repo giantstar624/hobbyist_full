@@ -412,7 +412,7 @@ class Scrapping {
     console.log("mercari complete")
     result.push(...(await this.novelship.getScrappingData(item, id)))
     console.log("novelship complete")
-    result.push(...(await this.vintage.getScrappingData(item, id)))
+    // result.push(...(await this.vintage.getScrappingData(item, id)))
     console.log("vintage complete")
     result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
