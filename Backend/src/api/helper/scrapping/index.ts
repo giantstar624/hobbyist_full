@@ -401,12 +401,19 @@ class Scrapping {
   public async scrappingBee(item, id = null) {
     let result: any = []
     result.push(...(await this.ebay.getEbayData(item, id)))
+    console.log("ebay complete")
     result.push(...(await this.scarce.getScarceData(item, id)))
+    console.log("scarce complete")
     result.push(...(await this.brickowl.getScrappingData(item, id)))
+    console.log("brickown complete")
     result.push(...(await this.chowrentoys.getScrappingData(item, id)))
+    console.log("chowrentoys complete")
     result.push(...(await this.mercari.getScrappingData(item, id)))
+    console.log("mercari complete")
     result.push(...(await this.novelship.getScrappingData(item, id)))
+    console.log("novelship complete")
     result.push(...(await this.vintage.getScrappingData(item, id)))
+    console.log("vintage complete")
     result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
 }
