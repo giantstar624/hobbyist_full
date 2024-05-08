@@ -12,11 +12,21 @@ import categoryModel from "../../schema/category.model";
 import { logger } from '../../config/logger';
 import EBay from './ebay'
 import Scarce from './scarce'
+import Brickowl from './brickowl'
+import Chowrentoys from './chowrentoys'
+import Mercari from './mercari'
+import Novelship from './novelship'
+import Vintage from './vintagevtg'
 
 
 class Scrapping {
   ebay = new EBay()
   scarce = new Scarce()
+  brickowl = new Brickowl()
+  chowrentoys = new Chowrentoys()
+  mercari = new Mercari()
+  novelship = new Novelship()
+  vintage = new Vintage()
   /*
   public async scrapCall(item) {
     try {
@@ -392,6 +402,11 @@ class Scrapping {
     let result: any = []
     result.push(...(await this.ebay.getEbayData(item, id)))
     result.push(...(await this.scarce.getScarceData(item, id)))
+    result.push(...(await this.brickowl.getScrappingData(item, id)))
+    result.push(...(await this.chowrentoys.getScrappingData(item, id)))
+    result.push(...(await this.mercari.getScrappingData(item, id)))
+    result.push(...(await this.novelship.getScrappingData(item, id)))
+    result.push(...(await this.vintage.getScrappingData(item, id)))
     result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
 }
