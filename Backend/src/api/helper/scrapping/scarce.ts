@@ -65,7 +65,7 @@ class Scrapping {
             });
             return invs.slice(0,100);
         } catch (error) {
-            throw new Error("ScrapingBee Error: " + error.message);
+            return []
         }
     }
 }

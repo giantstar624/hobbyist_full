@@ -60,7 +60,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            throw new Error("ScrapingBee Error: " + error.message);
+            return []
         }
     }
 }

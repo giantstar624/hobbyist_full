@@ -9,23 +9,23 @@ class Scrapping {
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-            url: `https://www.chowrentoys.com/search.asp?keyword=${url}`,
+            url: `https://www.yamestore.com/search?q=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".product-items",
+            wait_for: "#search-results",
             extract_rules: JSON.stringify({
                 data: {
-                    selector: ".product-item",
+                    selector: 'li.clearfix',
                     type: "list",
                     output: {
-                        title: ".name",
-                        price: ".price",
+                        title: "h4",
+                        price: "p",
                         link: {
-                            selector: ".img img",
+                            selector: ".res-image img",
                             output: "@src"
                         },
                         url: {
-                            selector: ".img a",
+                            selector: "h4 a",
                             output: "@href"
                         }
                     }
@@ -48,10 +48,10 @@ class Scrapping {
                         title: item.title,
                     };
                     if (item.link) {
-                        inv.link = item.link;
+                        inv.link = `https:${item.link}`
                         inv.baseCurrency = "$";
                         inv.date = new Date();
-                        inv.url = `https://www.chowrentoys.com/${item.url}`
+                        inv.url = `https://www.yamestore.com${item.url}`
                         if (id == null) inv.category = search_word
                         inv.item = id
                     }

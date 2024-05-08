@@ -13,7 +13,6 @@ class Scrapping {
             // Wait for there to be at least one
             // non-empty .event-tile element
             wait_for: ".collection-grid__wrapper",
-            render_js: false,
             extract_rules: JSON.stringify({
                 data: {
                     selector: ".grid__item.grid-product",
@@ -61,7 +60,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            throw new Error("ScrapingBee Error: " + error.message);
+            return []
         }
     }
 }

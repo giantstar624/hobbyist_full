@@ -9,23 +9,23 @@ class Scrapping {
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-            url: `https://www.chowrentoys.com/search.asp?keyword=${url}`,
+            url: `https://gamedaysportsmemorabilia.com/search.php?search_query=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".product-items",
+            wait_for: ".product-view-mode",
             extract_rules: JSON.stringify({
                 data: {
-                    selector: ".product-item",
+                    selector: 'li.product',
                     type: "list",
                     output: {
-                        title: ".name",
-                        price: ".price",
+                        title: ".card-title",
+                        price: ".price--withoutTax",
                         link: {
-                            selector: ".img img",
+                            selector: ".card-img-container img",
                             output: "@src"
                         },
                         url: {
-                            selector: ".img a",
+                            selector: ".card-title a",
                             output: "@href"
                         }
                     }
@@ -48,10 +48,10 @@ class Scrapping {
                         title: item.title,
                     };
                     if (item.link) {
-                        inv.link = item.link;
+                        inv.link = item.link
                         inv.baseCurrency = "$";
                         inv.date = new Date();
-                        inv.url = `https://www.chowrentoys.com/${item.url}`
+                        inv.url = item.url
                         if (id == null) inv.category = search_word
                         inv.item = id
                     }
