@@ -5,15 +5,15 @@ const getWidth = Dimensions.get('window').width;
 const getHeight = Dimensions.get('window').height;
 
 export const SafeView = styled.SafeAreaView`
-  background-color: ${props => props.theme.colors.bg.secondary};
+  background-color: ${(props:any) => props.theme.colors.bg.secondary};
 `;
 
 export const ProfileContainer = styled.View`
   width: 100%;
   height: 100%;
   justify-items: center;
-  padding-left: ${props => props.theme.space[6]}
-  padding-right: ${props => props.theme.space[6]}
+  padding-left: ${(props:any) => props.theme.space[6]}
+  padding-right: ${(props:any) => props.theme.space[6]}
   background: rgba(255, 255, 255, 0.7);
 `;
 export const TierLevelIcon = styled.View`
@@ -34,10 +34,10 @@ export const TierLevelText = styled.Text`
 `;
 export const UserTierText = styled.Text`
   background-color: #3CB474;
-  padding-left: ${props => props.theme.space[2]}
-  padding-right: ${props => props.theme.space[2]}
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.subText}
+  padding-left: ${(props:any) => props.theme.space[2]}
+  padding-right: ${(props:any) => props.theme.space[2]}
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.subText}
 `;
 export const BackgroundTop = styled.ImageBackground.attrs({
   source: require('../../../../assets/bg-top.png'),
@@ -90,24 +90,24 @@ export const SubmitButton = styled.View`
     width: 100%;
     align-items: center;
     border-radius:4px;
-    background-color: ${props => props.theme.colors.bg.secondary}
-    padding-top: ${props => props.theme.space[3]}
-    padding-bottom: ${props => props.theme.space[3]}
-    margin-bottom: ${props => props.theme.space[3]};
+    background-color: ${(props:any) => props.theme.colors.bg.secondary}
+    padding-top: ${(props:any) => props.theme.space[3]}
+    padding-bottom: ${(props:any) => props.theme.space[3]}
+    margin-bottom: ${(props:any) => props.theme.space[3]};
 `;
 export const DeleteButton = styled.View`
     width: 100%;
     align-items: center;
     border-radius:4px;
-    background-color: ${props => props.theme.colors.text.error}
-    padding-top: ${props => props.theme.space[3]}
-    padding-bottom: ${props => props.theme.space[3]}
-    margin-bottom: ${props => props.theme.space[3]};
+    background-color: ${(props:any) => props.theme.colors.text.error}
+    padding-top: ${(props:any) => props.theme.space[3]}
+    padding-bottom: ${(props:any) => props.theme.space[3]}
+    margin-bottom: ${(props:any) => props.theme.space[3]};
 `;
 export const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.body};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.body};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
 `;
 
 export const OnTouch = styled.TouchableOpacity`
@@ -119,30 +119,30 @@ export const TierCollector = styled.View`
   border-top-style: solid;
   border-top-width: 1px;
   border-top-color: #8ecfad;
-  margin-top: ${props => props.theme.space[8]};
-  padding-top: ${props => props.theme.space[4]};
+  margin-top: ${(props:any) => props.theme.space[8]};
+  padding-top: ${(props:any) => props.theme.space[4]};
 `;
 
 export const Wrapper = styled.View`
-  padding-left: ${props => props.theme.space[6]};
-  padding-right: ${props => props.theme.space[6]};
-  padding-bottom: ${props => props.theme.space[6]};
+  padding-left: ${(props:any) => props.theme.space[6]};
+  padding-right: ${(props:any) => props.theme.space[6]};
+  padding-bottom: ${(props:any) => props.theme.space[6]};
 `;
 
 export const ProfileTitle = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding-top: ${props => props.theme.space[4]}
-  padding-bottom: ${props => props.theme.space[4]}
+  padding-top: ${(props:any) => props.theme.space[4]}
+  padding-bottom: ${(props:any) => props.theme.space[4]}
   border-bottom-width: 1px;
   border-bottom-color: #8ecfad;
-  margin-bottom: ${props => props.theme.space[4]}
+  margin-bottom: ${(props:any) => props.theme.space[4]}
 `;
 
 export const ProfileTitleText = styled.Text`
-  color: ${props => props.theme.colors.text.tertiary};
-  font-size: ${props => props.theme.fontSizes.body}
-  font-weight: ${props => props.theme.fontWeights.bold}
+  color: ${(props:any) => props.theme.colors.text.tertiary};
+  font-size: ${(props:any) => props.theme.fontSizes.body}
+  font-weight: ${(props:any) => props.theme.fontWeights.bold}
 `;
 export const BackButton = styled.Image`
   width: 24px;
@@ -162,32 +162,32 @@ export const TierImage = styled.Image`
 `;
 export const TierLeftText = styled.Text`
   background-color: #82BDCA;
-  padding-left: ${props => props.theme.space[2]}
-  padding-right: ${props => props.theme.space[2]}
-  color: ${props => props.theme.colors.text.inverse};
+  padding-left: ${(props:any) => props.theme.space[2]}
+  padding-right: ${(props:any) => props.theme.space[2]}
+  color: ${(props:any) => props.theme.colors.text.inverse};
 `;
 export const CurrentButton = styled.View`
   align-items: center;
   border-radius: 4px;
-  background-color: ${props => props.theme.colors.bg.quinary};
-  padding-top: ${props => props.theme.space[2]};
-  padding-bottom: ${props => props.theme.space[2]};
-  padding-left: ${props => props.theme.space[5]};
-  padding-right: ${props => props.theme.space[5]};
+  background-color: ${(props:any) => props.theme.colors.bg.quinary};
+  padding-top: ${(props:any) => props.theme.space[2]};
+  padding-bottom: ${(props:any) => props.theme.space[2]};
+  padding-left: ${(props:any) => props.theme.space[5]};
+  padding-right: ${(props:any) => props.theme.space[5]};
 `;
 export const CurrentButtonText = styled.Text`
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.text};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.text};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
 `;
 
 export const TierCollectorList = styled.View`
-  padding-top: ${props => props.theme.space[3]};
+  padding-top: ${(props:any) => props.theme.space[3]};
 `;
 export const TierListItem = styled.View`
   flex-direction: row;
   align-items: center;
-  padding-bottom: ${props => props.theme.space[1]};
+  padding-bottom: ${(props:any) => props.theme.space[1]};
 `;
 
 export const ItemImage = styled.Image`
@@ -195,9 +195,9 @@ export const ItemImage = styled.Image`
   height: 24px;
 `;
 export const TierListItemText = styled.Text`
-  font-size: ${props => props.theme.fontSizes.subText};
-  color: ${props => props.theme.colors.text.primary};
-  padding-left: ${props => props.theme.space[1]};
+  font-size: ${(props:any) => props.theme.fontSizes.subText};
+  color: ${(props:any) => props.theme.colors.text.primary};
+  padding-left: ${(props:any) => props.theme.space[1]};
 `;
 export const BackgroundBottomLeft = styled.ImageBackground.attrs({
   source: require('../../../../assets/bg-polygon1.png'),

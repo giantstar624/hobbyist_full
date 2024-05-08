@@ -10,9 +10,9 @@ export const ItemTitle = styled.View`
   border-right-width: 1px;
   border-top-color: #8ecfad;
   border-right-color: #8ecfad;
-  padding-right: ${props => props.theme.space[2]}
-  padding-top: ${props => props.theme.space[3]};
-  padding-bottom: ${props => props.theme.space[3]};
+  padding-right: ${(props:any) => props.theme.space[2]}
+  padding-top: ${(props:any) => props.theme.space[3]};
+  padding-bottom: ${(props:any) => props.theme.space[3]};
   flex-grow: 1;
 `;
 
@@ -28,10 +28,10 @@ export const ItemDescription = styled.View`
   border-right-width: 1px;
   border-top-color: #8ECFAD;
   border-right-color: #8ECFAD;
-  padding-left: ${props => props.theme.space[2]}
-  padding-right: ${props => props.theme.space[2]}
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-left: ${(props:any) => props.theme.space[2]}
+  padding-right: ${(props:any) => props.theme.space[2]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
 `;
 
 export const RemoveItemNavigate = styled.View`
@@ -44,8 +44,8 @@ export const RemoveItemNavigate = styled.View`
   border-top-color: #8ECFAD;
   border-right-width: 1px;
   border-right-color: #8ECFAD;
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
 `;
 export const ItemNavigate = styled.View`
   flex-direction: row;
@@ -55,8 +55,8 @@ export const ItemNavigate = styled.View`
   align-items: center;
   border-top-width: 1px;
   border-top-color: #8ECFAD;
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
 `;
 
 export const DeleteIcon = styled.Image`
@@ -65,9 +65,9 @@ export const DeleteIcon = styled.Image`
 `;
 
 export const NoItem = styled.Text`
-  color: ${props => props.theme.colors.text.dark};
-  font-size: ${props => props.theme.fontSizes.caption};
-  font-weight: ${props => props.theme.fontWeights.bold};
-  margin-bottom: ${props => props.theme.space[3]};
+  color: ${(props:any) => props.theme.colors.text.dark};
+  font-size: ${(props:any) => props.theme.fontSizes.caption};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
+  margin-bottom: ${(props:any) => props.theme.space[3]};
   align-self: center;
 `;

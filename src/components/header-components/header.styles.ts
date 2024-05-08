@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Header = styled.View`
-  margin-top: ${props => props.theme.space[3]}
+  margin-top: ${(props:any) => props.theme.space[3]}
   flex-direction: row;
   justify-content: space-between;
 `;

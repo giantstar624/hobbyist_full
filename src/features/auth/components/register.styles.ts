@@ -5,10 +5,10 @@ const getWidth = Dimensions.get('window').width;
 const getHeight = Dimensions.get('window').height;
 
 export const SafeView = styled.SafeAreaView`
-  background-color: ${props => props.theme.colors.bg.secondary};
+  background-color: ${(props:any) => props.theme.colors.bg.secondary};
 `;
 export const Header = styled.View`
-  margin-top: ${props => props.theme.space[3]}
+  margin-top: ${(props:any) => props.theme.space[3]}
   flex-direction: row;
   justify-content: space-between;
 `;
@@ -30,8 +30,8 @@ export const LoginContainer = styled.View`
   width: 100%;
   height: 100%;
   justify-items: center;
-  padding-left: ${props => props.theme.space[6]}
-  padding-right: ${props => props.theme.space[6]}
+  padding-left: ${(props:any) => props.theme.space[6]}
+  padding-right: ${(props:any) => props.theme.space[6]}
 `;
 
 export const Welcome = styled.View`
@@ -41,26 +41,26 @@ export const Welcome = styled.View`
   margin-bottom: ${getWidth / 10}px;
 `;
 export const WelcomeText = styled.Text`
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.h5};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.h5};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
   text-transform: uppercase;
-  margin-bottom: ${props => props.theme.space[3]};
+  margin-bottom: ${(props:any) => props.theme.space[3]};
 `;
 
 export const WelcomeSloganText = styled.Text`
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.text};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.text};
   text-align: center;
 `;
 
 export const OnTouchSignUp = styled.TouchableOpacity``;
 export const SignUpText = styled.Text`
-  color: ${props => props.theme.colors.text.quaternary};
-  font-size: ${props => props.theme.fontSizes.text};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.quaternary};
+  font-size: ${(props:any) => props.theme.fontSizes.text};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
   text-decoration: underline;
-  text-decoration-color: ${props => props.theme.colors.text.quaternary};
+  text-decoration-color: ${(props:any) => props.theme.colors.text.quaternary};
   margin-bottom: -4px;
 `;
 
@@ -120,14 +120,14 @@ export const SubmitButton = styled.ImageBackground.attrs({
     width: 100%;
     align-items: center;
     border-radius:4px;
-    padding-top: ${props => props.theme.space[3]}
-    padding-bottom: ${props => props.theme.space[3]}
-    margin-bottom: ${props => props.theme.space[3]};
+    padding-top: ${(props:any) => props.theme.space[3]}
+    padding-bottom: ${(props:any) => props.theme.space[3]}
+    margin-bottom: ${(props:any) => props.theme.space[3]};
 `;
 export const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.text.secondary};
-  font-size: ${props => props.theme.fontSizes.body};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.secondary};
+  font-size: ${(props:any) => props.theme.fontSizes.body};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
 `;
 
 export const OnTouch = styled.TouchableOpacity`
@@ -139,18 +139,18 @@ export const TermAndContions = styled.View`
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: #8ecfad;
-  margin-bottom: ${props => props.theme.space[8]};
+  margin-bottom: ${(props:any) => props.theme.space[8]};
 `;
 export const TermAndContionsText = styled.Text`
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.subCaption};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.subCaption};
   text-align: center;
   margin-bottom: 14px;
 `;
 export const TermAndContionsTextColor = styled.Text`
-  color: ${props => props.theme.colors.text.quaternary};
-  font-size: ${props => props.theme.fontSizes.subCaption};
+  color: ${(props:any) => props.theme.colors.text.quaternary};
+  font-size: ${(props:any) => props.theme.fontSizes.subCaption};
   text-decoration: underline;
-  text-decoration-color: ${props => props.theme.colors.text.quaternary};
+  text-decoration-color: ${(props:any) => props.theme.colors.text.quaternary};
 `;
 export const Loading = styled.ActivityIndicator``;

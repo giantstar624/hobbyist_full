@@ -15,15 +15,15 @@ export const ItemDetailContainer = styled.View`
   height: 100%;
 `;
 export const ItemDetailContainerPadding = styled.View`
-  padding-left: ${props => props.theme.space[6]};
-  padding-right: ${props => props.theme.space[6]};
+  padding-left: ${(props:any) => props.theme.space[6]};
+  padding-right: ${(props:any) => props.theme.space[6]};
 `;
 export const ItemTitleContainer = styled.View`
   flex-direction: row;
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
   border-bottom-width: 1px;
-  border-bottom-color: ${props => props.theme.colors.ui.quinary}
+  border-bottom-color: ${(props:any) => props.theme.colors.ui.quinary}
 `;
 export const ItemTier = styled.View`
   width: 33.333%;
@@ -52,10 +52,10 @@ export const TierLevelText = styled.Text`
 `;
 export const UserTierText = styled.Text`
   background-color: #3CB474;
-  padding-left: ${props => props.theme.space[2]}
-  padding-right: ${props => props.theme.space[2]}
-  color: ${props => props.theme.colors.text.inverse};
-  font-size: ${props => props.theme.fontSizes.subText}
+  padding-left: ${(props:any) => props.theme.space[2]}
+  padding-right: ${(props:any) => props.theme.space[2]}
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-size: ${(props:any) => props.theme.fontSizes.subText}
 `;
 
 export const ItemGoBack = styled.View`
@@ -74,16 +74,16 @@ export const ItemDescription = styled.View`
   flex-direction: row;
   border-bottom-width: 1px;
   border-right-width: 1px;
-  border-bottom-color: ${props => props.theme.colors.ui.quinary};
-  border-right-color: ${props => props.theme.colors.ui.quinary};
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
-  margin-bottom: ${props => props.theme.space[4]}
+  border-bottom-color: ${(props:any) => props.theme.colors.ui.quinary};
+  border-right-color: ${(props:any) => props.theme.colors.ui.quinary};
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
+  margin-bottom: ${(props:any) => props.theme.space[4]}
 `;
 export const ItemDescriptionImage = styled.Image`
   width: 60px;
   height: 68px;
-  border-radius: ${props => props.theme.space[2]};
+  border-radius: ${(props:any) => props.theme.space[2]};
 `;
 export const OnTouchEditImage = styled.TouchableOpacity`
   width: 26px;
@@ -100,36 +100,36 @@ export const ItemEditImage = styled.Image`
 export const ItemDescriptionDetail = styled.View`
   flex-direction: column;
   flex: 1;
-  padding-left: ${props => props.theme.space[3]}
-  padding-right: ${props => props.theme.space[3]}
+  padding-left: ${(props:any) => props.theme.space[3]}
+  padding-right: ${(props:any) => props.theme.space[3]}
 `;
 export const ItemDescriptionDetailHeader = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: ${props => props.theme.space[2]};
+  padding-bottom: ${(props:any) => props.theme.space[2]};
   align-items: center;
 `;
 export const ItemAddedDateText = styled.Text`
-  font-size: ${props => props.theme.fontSizes.subCaption};
-  color: ${props => props.theme.colors.text.secondary};
-  font-weight: ${props => props.theme.fontWeights.medium};
+  font-size: ${(props:any) => props.theme.fontSizes.subCaption};
+  color: ${(props:any) => props.theme.colors.text.secondary};
+  font-weight: ${(props:any) => props.theme.fontWeights.medium};
 `;
 export const ItemDescriptionEditImage = styled.Image`
   width: 16px;
   height: 16px;
 `;
 export const ItemDescriptionText = styled.Text`
-  font-size: ${props => props.theme.fontSizes.subCaption};
-  color: ${props => props.theme.colors.text.primary};
+  font-size: ${(props:any) => props.theme.fontSizes.subCaption};
+  color: ${(props:any) => props.theme.colors.text.primary};
 `;
 export const ItemTierDivider = styled.View`
   border-bottom-width: 1px;
-  border-bottom-color: ${props => props.theme.colors.ui.quinary};
+  border-bottom-color: ${(props:any) => props.theme.colors.ui.quinary};
   height: 1px;
   flex: 1;
 `;
 export const ChartContainer = styled.View`
-  margin-bottom: ${props => props.theme.space[4]};
+  margin-bottom: ${(props:any) => props.theme.space[4]};
 `;
 export const ScrollViwWrapper = styled.View`
   height: 80px;
@@ -142,24 +142,24 @@ export const ItemUserTier = styled.View`
   background: #8ecfad;
   height: 65px;
   width: ${getWidth / 2 - 34}px;
-  border-radius: ${props => props.theme.space[3]};
-  margin-right: ${props => props.theme.space[3]}
-  margin-left: ${props => props.theme.space[1]}
+  border-radius: ${(props:any) => props.theme.space[3]};
+  margin-right: ${(props:any) => props.theme.space[3]}
+  margin-left: ${(props:any) => props.theme.space[1]}
 `;
 export const ItemUserTierImage = styled.Image`
   width: 56px;
   height: 64px;
-  border-radius: ${props => props.theme.space[2]};
+  border-radius: ${(props:any) => props.theme.space[2]};
   margin-top: -5px;
   margin-left: -3px;
 `;
 export const ItemUserTierTitleText = styled.Text`
-  font-size: ${props => props.theme.fontSizes.subText};
-  color: ${props => props.theme.colors.text.inverse};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  font-size: ${(props:any) => props.theme.fontSizes.subText};
+  color: ${(props:any) => props.theme.colors.text.inverse};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
   text-decoration: underline;
-  text-decoration-color: ${props => props.theme.colors.ui.quaternary}
-  padding: ${props => props.theme.space[2]};
+  text-decoration-color: ${(props:any) => props.theme.colors.ui.quaternary}
+  padding: ${(props:any) => props.theme.space[2]};
   flex: 1;
 `;
 export const ItemUserTierVariant = styled.View`
@@ -169,7 +169,7 @@ export const ItemUserTierVariant = styled.View`
   background: #EEC689;
   height: 65px;
   width: ${getWidth / 2 - 34}px;
-  border-radius: ${props => props.theme.space[3]};
-  margin-right: ${props => props.theme.space[3]}
-  margin-left: ${props => props.theme.space[1]}
+  border-radius: ${(props:any) => props.theme.space[3]};
+  margin-right: ${(props:any) => props.theme.space[3]}
+  margin-left: ${(props:any) => props.theme.space[1]}
 `;

@@ -14,9 +14,9 @@ export const ItemTitle = styled.View`
   border-right-width: 1px;
   border-top-color: #8ecfad;
   border-right-color: #8ecfad;
-  padding-right: ${props => props.theme.space[2]}
-  padding-top: ${props => props.theme.space[3]};
-  padding-bottom: ${props => props.theme.space[3]};
+  padding-right: ${(props:any) => props.theme.space[2]}
+  padding-top: ${(props:any) => props.theme.space[3]};
+  padding-bottom: ${(props:any) => props.theme.space[3]};
   flex-grow: 1;
 `;
 export const ItemImage = styled.Image`
@@ -26,10 +26,10 @@ export const ItemImage = styled.Image`
 `;
 //style={{height: 60, width: 50, marginLeft: 10, borderRadius: 12}}
 export const ItemTitleText = styled.Text`
-  color: ${props => props.theme.colors.text.tertiary}
-  padding-left: ${props => props.theme.space[2]}
+  color: ${(props:any) => props.theme.colors.text.tertiary}
+  padding-left: ${(props:any) => props.theme.space[2]}
   flex: 1
-  font-weight: ${props => props.theme.fontWeights.bold}
+  font-weight: ${(props:any) => props.theme.fontWeights.bold}
 `;
 export const ItemDescription = styled.View`
   flex-direction: row;
@@ -41,15 +41,15 @@ export const ItemDescription = styled.View`
   border-right-width: 1px;
   border-top-color: #8ECFAD;
   border-right-color: #8ECFAD;
-  padding-left: ${props => props.theme.space[2]}
-  padding-right: ${props => props.theme.space[2]}
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-left: ${(props:any) => props.theme.space[2]}
+  padding-right: ${(props:any) => props.theme.space[2]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
 `;
 export const ItemDescriptionText = styled.Text`
-  color: ${props => props.theme.colors.text.primary};
-  font-size: ${props => props.theme.fontSizes.subCaption};
-  font-weight: ${props => props.theme.fontWeights.bold};
+  color: ${(props:any) => props.theme.colors.text.primary};
+  font-size: ${(props:any) => props.theme.fontSizes.subCaption};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
 `;
 export const ItemNavigate = styled.View`
   flex-direction: row;
@@ -59,8 +59,8 @@ export const ItemNavigate = styled.View`
   align-items: center;
   border-top-width: 1px;
   border-top-color: #8ECFAD;
-  padding-top: ${props => props.theme.space[3]}
-  padding-bottom: ${props => props.theme.space[3]}
+  padding-top: ${(props:any) => props.theme.space[3]}
+  padding-bottom: ${(props:any) => props.theme.space[3]}
 `;
 export const OnTouch = styled.TouchableOpacity`
   width: 100%;

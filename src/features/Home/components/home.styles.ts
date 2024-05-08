@@ -6,29 +6,29 @@ const getWidth = Dimensions.get('window').width;
 const getHeight = Dimensions.get('window').height;
 
 export const Wrapper = styled.View`
-  padding-left: ${props => props.theme.space[6]};
-  padding-right: ${props => props.theme.space[6]};
+  padding-left: ${(props:any) => props.theme.space[6]};
+  padding-right: ${(props:any) => props.theme.space[6]};
 `;
 
 export const SearchContainer = styled.View`
-  margin-top: ${props => props.theme.space[6]};
-  margin-bottom: ${props => props.theme.space[6]};
-  padding-left: ${props => props.theme.space[6]};
-  padding-right: ${props => props.theme.space[6]};
+  margin-top: ${(props:any) => props.theme.space[6]};
+  margin-bottom: ${(props:any) => props.theme.space[6]};
+  padding-left: ${(props:any) => props.theme.space[6]};
+  padding-right: ${(props:any) => props.theme.space[6]};
   flex-direction: row;
 `;
 export const SearchInput = styled.TextInput.attrs({
   placeholderTextColor: '#096C5C',
 })`
-  height: ${props => props.theme.sizes[5]};
+  height: ${(props:any) => props.theme.sizes[5]};
   width: 100%;
   background: rgba(255, 255, 255, 0.56);
   font-weight: bold;
   font-size: 13px;
-  padding-left: ${props => props.theme.space[3]};
-  padding-right: ${props => props.theme.space[3]};
-  padding-top: ${props => props.theme.space[2]}
-  padding-bottom: ${props => props.theme.space[2]}
+  padding-left: ${(props:any) => props.theme.space[3]};
+  padding-right: ${(props:any) => props.theme.space[3]};
+  padding-top: ${(props:any) => props.theme.space[2]}
+  padding-bottom: ${(props:any) => props.theme.space[2]}
   text-transform: uppercase;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -36,15 +36,15 @@ export const SearchInput = styled.TextInput.attrs({
 export const SelectInput = styled.TextInput.attrs({
   placeholderTextColor: '#096C5C',
 })`
-  height: ${props => props.theme.sizes[5]};
+  height: ${(props:any) => props.theme.sizes[5]};
   width: 100%;
   background: rgba(255, 255, 255, 0.56);
   font-weight: bold;
   font-size: 13px;
-  padding-left: ${props => props.theme.space[3]};
-  padding-right: ${props => props.theme.space[3]};
-  padding-top: ${props => props.theme.space[2]}
-  padding-bottom: ${props => props.theme.space[2]}
+  padding-left: ${(props:any) => props.theme.space[3]};
+  padding-right: ${(props:any) => props.theme.space[3]};
+  padding-top: ${(props:any) => props.theme.space[2]}
+  padding-bottom: ${(props:any) => props.theme.space[2]}
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   
@@ -99,9 +99,9 @@ export const FlatListView = styled(FlatList).attrs({
 })``;
 
 export const NoItem = styled.Text`
-  color: ${props => props.theme.colors.text.dark};
-  font-size: ${props => props.theme.fontSizes.caption};
-  font-weight: ${props => props.theme.fontWeights.bold};
-  margin-bottom: ${props => props.theme.space[3]};
+  color: ${(props:any) => props.theme.colors.text.dark};
+  font-size: ${(props:any) => props.theme.fontSizes.caption};
+  font-weight: ${(props:any) => props.theme.fontWeights.bold};
+  margin-bottom: ${(props:any) => props.theme.space[3]};
   align-self: center;
 `;
