@@ -12,7 +12,7 @@ class Scrapping {
             url: `https://www.whatnot.com/search?query=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".MuiGrid-root.MuiGrid-container",
+            wait_for: "._pNjk",
             extract_rules: JSON.stringify({
                 data: {
                     selector: '.MuiGrid-root.MuiGrid-container > div',

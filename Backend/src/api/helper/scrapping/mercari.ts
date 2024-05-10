@@ -12,7 +12,7 @@ class Scrapping {
             url: `https://www.mercari.com/search/?keyword=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: 'div[data-testid="SearchResults"]',
+            wait_for: '.DesktopSearch__RightColumn-sc-68ebcf42-1',
             extract_rules: JSON.stringify({
                 data: {
                     selector: "div[data-itemprice]",
@@ -36,8 +36,9 @@ class Scrapping {
             const { data } = await axios.get("https://app.scrapingbee.com/api/v1/", {
                 params: params
             });
-
             const response = data.data;
+
+            // console.log(response)
 
             const invs: any[] = [];
 

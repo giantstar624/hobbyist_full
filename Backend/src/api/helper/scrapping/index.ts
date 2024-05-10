@@ -17,6 +17,15 @@ import Chowrentoys from './chowrentoys'
 import Mercari from './mercari'
 import Novelship from './novelship'
 import Vintage from './vintagevtg'
+import Adobebooks from './adebooks'
+import Bonanza from './bonanza'
+import Estay from './estay'
+import Gamedays from './gamedays'
+import Myslabs from './myslabs'
+import Steinersports from './steinersports'
+import Whatnot from './whatnot'
+import Yamestore from './yamestore'
+import Fatherson from './fatherson'
 
 
 class Scrapping {
@@ -27,6 +36,15 @@ class Scrapping {
   mercari = new Mercari()
   novelship = new Novelship()
   vintage = new Vintage()
+  adobebooks = new Adobebooks()
+  bonanza = new Bonanza()
+  estay = new Estay()
+  gamedays = new Gamedays()
+  myslabs = new Myslabs()
+  steiner = new Steinersports()
+  whatnot = new Whatnot()
+  yamestore = new Yamestore()
+  fatherson = new Fatherson()
   /*
   public async scrapCall(item) {
     try {
@@ -339,7 +357,6 @@ class Scrapping {
 
   public async getMedianPrice(items) {
     if (!items) return null
-    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
 
     //use only items with high enough similarity
     items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
@@ -363,7 +380,6 @@ class Scrapping {
   }
   //take similarity into account
   public async getAveragePrice(items) {
-    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
     items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
     let count = 0
     let sum = 0
@@ -380,7 +396,6 @@ class Scrapping {
   }
 
   public async getHighLowPrice(items) {
-    if (items[0].title.toLowerCase() == "shop on ebay") items = items.slice(1)
     items.sort((a, b) => b.similarity - a.similarity)
     const good_items = []
     let count = 0
@@ -400,9 +415,9 @@ class Scrapping {
 
   public async scrappingBee(item, id = null) {
     let result: any = []
-    result.push(...(await this.ebay.getEbayData(item, id)))
+    result.push(...(await this.ebay.getScrappingData(item, id)))
     console.log("ebay complete")
-    result.push(...(await this.scarce.getScarceData(item, id)))
+    result.push(...(await this.scarce.getScrappingData(item, id)))
     console.log("scarce complete")
     result.push(...(await this.brickowl.getScrappingData(item, id)))
     console.log("brickown complete")
@@ -412,8 +427,26 @@ class Scrapping {
     console.log("mercari complete")
     result.push(...(await this.novelship.getScrappingData(item, id)))
     console.log("novelship complete")
-    // result.push(...(await this.vintage.getScrappingData(item, id)))
+    result.push(...(await this.vintage.getScrappingData(item, id)))
     console.log("vintage complete")
+    result.push(...(await this.yamestore.getScrappingData(item, id)))
+    console.log("yamestore complete")
+    result.push(...(await this.adobebooks.getScrappingData(item, id)))
+    console.log("adobebooks complete")
+    result.push(...(await this.bonanza.getScrappingData(item, id)))
+    console.log("bonanza complete")
+    result.push(...(await this.estay.getScrappingData(item, id)))
+    console.log("estay complete")
+    result.push(...(await this.myslabs.getScrappingData(item, id)))
+    console.log("myslabs complete")
+    result.push(...(await this.whatnot.getScrappingData(item, id)))
+    console.log("whatnot complete")
+    result.push(...(await this.steiner.getScrappingData(item, id)))
+    console.log("steiner complete")
+    result.push(...(await this.gamedays.getScrappingData(item, id)))
+    console.log("gamedays complete")
+    result.push(...(await this.fatherson.getScrappingData(item, id)))
+    console.log("fatherson complete")
     result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
 }

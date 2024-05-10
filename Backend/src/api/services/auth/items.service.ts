@@ -313,8 +313,8 @@ export class ItemService {
         message: "Item found",
         data: {
           item: getItem,
-          similar_item: getItems.similar_data.slice(1, 11),
-          same_data: getItems.same_data.slice(1, 11),
+          similar_item: getItems.similar_data.slice(0, 11),
+          same_data: getItems.same_data.slice(0, 11),
         },
       };
     }
@@ -341,9 +341,8 @@ export class ItemService {
     let same_data = [], related_data = [];
     let scrapeTime = same[0]?.createdAt;
     if(same && same?.length>0){
-      if(same[0]?.same_data?.length>1) {
+      if(same[0]?.same_data?.length>0) {
         same_data = same[0].same_data
-        same_data.shift()
       }
     }
 
@@ -355,7 +354,6 @@ export class ItemService {
     }
     if (same_data.length==0 && sim_items){
       same_data = sim_items.same_data
-      same_data.shift()
       scrapeTime = sim_items.createdAt;
 
     }

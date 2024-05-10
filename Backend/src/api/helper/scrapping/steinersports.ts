@@ -12,7 +12,7 @@ class Scrapping {
             url: `https://www.steinersports.com/?query=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".grid-small-1-medium-3",
+            wait_for: ".product-grid-container",
             extract_rules: JSON.stringify({
                 data: {
                     selector: '.column',

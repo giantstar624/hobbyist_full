@@ -4,7 +4,7 @@ class Scrapping {
         if(!price) return 0
         return parseFloat(price.slice(3).replace(",", ""))
     }
-    public async getScarceData(search_word, id) {
+    public async getScrappingData(search_word, id) {
         const url = search_word.split(" ").join("+")
         const params = {
             api_key:
@@ -12,7 +12,7 @@ class Scrapping {
             url: `https://scarce.co/search?q=${url}&sort_by=relevance`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".collection__cards",
+            wait_for: "dynamic-product-search",
             extract_rules: JSON.stringify({
                 data: {
                     selector: "product-card",

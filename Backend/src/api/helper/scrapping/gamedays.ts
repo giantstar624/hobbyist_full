@@ -12,7 +12,7 @@ class Scrapping {
             url: `https://gamedaysportsmemorabilia.com/search.php?search_query=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".product-view-mode",
+            wait_for: "body",
             extract_rules: JSON.stringify({
                 data: {
                     selector: 'li.product',

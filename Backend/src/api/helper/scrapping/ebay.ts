@@ -16,7 +16,7 @@ class Scrapping {
             return parseFloat(price?.replace("$", "").replace(",", ""));
         }
     }
-    public async getEbayData(search_word, id) {
+    public async getScrappingData(search_word, id) {
         const url = search_word.split(" ").join("+")
         const params = {
             api_key:
@@ -77,7 +77,7 @@ class Scrapping {
                     invs.push(inv);
                 }
             });
-            return invs.slice(0,100);
+            return invs.slice(1,101);
         } catch (error) {
             return []
         }
