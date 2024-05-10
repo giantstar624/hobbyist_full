@@ -415,7 +415,7 @@ class Scrapping {
   }
 
   public async scrappingBee(item, id = null) {
-    let result: any = []
+    let result: any[] = []
     result.push(...(await this.ebay.getScrappingData(item, id)))
     console.log("ebay complete")
     result.push(...(await this.scarce.getScrappingData(item, id)))
@@ -450,7 +450,10 @@ class Scrapping {
     console.log("fatherson complete")
     result.push(...(await this.amazon.getScrappingData(item, id)))
     console.log("amazon complete")
-    result.sort((a,b)=>{a.similarity-b.similarity})
+    result.forEach(element => {
+      element.similarity = similarity(element.title, item) 
+    });
+    result.sort((a,b)=> b.similarity - a.similarity)
     return result.slice(0, 100)
 }
 /*
