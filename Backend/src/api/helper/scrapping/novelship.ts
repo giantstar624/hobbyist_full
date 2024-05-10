@@ -2,7 +2,7 @@ import axios from 'axios'
 class Scrapping {
     public PriceToStr(price: string) {
         if (!price) return 0
-        return parseFloat(price.slice(4).replace(",", ""))
+        return parseFloat(price.split(" ")[1].replace(",", ""))
     }
     public async getScrappingData(search_word, id) {
         const url = search_word.split(" ").join("+")
@@ -12,7 +12,9 @@ class Scrapping {
             url: `https://novelship.com/browse?q=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: ".injXPf",
+            // wait_for: "section.sc-Arkif",
+            wait: 3000,
+            // wait_for: "section.sc-Arkif",
             extract_rules: JSON.stringify({
                 data: {
                     selector: ".injXPf a",
@@ -38,7 +40,7 @@ class Scrapping {
             });
 
             const response = data.data;
-
+            console.log(response)
             const invs: any[] = [];
 
             await response.map(async (item) => {
@@ -49,7 +51,7 @@ class Scrapping {
                     };
                     if (item.link) {
                         inv.link = item.link;
-                        inv.baseCurrency = "US$";
+                        inv.baseCurrency = item.price.split(" ")[0];
                         inv.date = new Date();
                         inv.url = `https://novelship.com${item.url}`
                         if (id == null) inv.category = search_word
