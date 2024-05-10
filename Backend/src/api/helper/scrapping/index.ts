@@ -26,9 +26,10 @@ import Steinersports from './steinersports'
 import Whatnot from './whatnot'
 import Yamestore from './yamestore'
 import Fatherson from './fatherson'
-
+import Amazon from './amazon'
 
 class Scrapping {
+  amazon = new Amazon()
   ebay = new EBay()
   scarce = new Scarce()
   brickowl = new Brickowl()
@@ -447,6 +448,8 @@ class Scrapping {
     console.log("gamedays complete")
     result.push(...(await this.fatherson.getScrappingData(item, id)))
     console.log("fatherson complete")
+    result.push(...(await this.amazon.getScrappingData(item, id)))
+    console.log("amazon complete")
     result.sort((a,b)=>{a.similarity-b.similarity})
     return result.slice(0, 100)
 }
