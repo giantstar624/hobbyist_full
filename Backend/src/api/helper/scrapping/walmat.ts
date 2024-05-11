@@ -38,8 +38,8 @@ class Scrapping {
             });
 
             const response = data.data;
-            if(typeof response == 'object') console.log(response)
-            else console.log(response.slice(5))
+            // if(typeof response == 'object') console.log(response)
+            // else console.log(response.slice(5))
 
             const invs: any[] = [];
 

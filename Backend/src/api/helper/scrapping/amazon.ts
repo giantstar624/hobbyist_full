@@ -65,7 +65,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             return []
         }
     }

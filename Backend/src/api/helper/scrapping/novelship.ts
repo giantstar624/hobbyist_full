@@ -40,7 +40,7 @@ class Scrapping {
             });
 
             const response = data.data;
-            console.log(response)
+            // console.log(response)
             const invs: any[] = [];
 
             await response.map(async (item) => {
