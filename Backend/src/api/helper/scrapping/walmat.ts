@@ -2,34 +2,30 @@ import axios from 'axios'
 class Scrapping {
     public PriceToStr(price: string) {
         if (!price) return 0
-        return parseFloat(price.slice(1).replace(",", ""))
+        return parseFloat(price.split('$')[1].replace(",", ""))
     }
     public async getScrappingData(search_word, id) {
         const url = search_word.split(" ").join("+")
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-            url: `https://www.amazon.com/s?k=${url}`,
+            url: `https://www.walmart.com/search?q=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            // wait: 10000,
-            wait_for: ".s-main-slot",
+            wait_for: ".main-content",
             extract_rules: JSON.stringify({
                 data: {
-                    selector: '.s-main-slot div[data-component-type="s-search-result"]',
+                    selector: 'div[data-testid="item-stack"]>div',
                     type: "list",
                     output: {
-                        title: 'h2',
-                        price: {
-                            selector: 'div[data-cy="price-recipe"] .a-price>span',
-                            output: "text"
-                        },
+                        title: 'span[data-automation-id="product-title"]',
+                        price: 'div[data-automation-id="product-price"]>span',
                         link: {
-                            selector: ".s-product-image-container img",
+                            selector: "img",
                             output: "@src"
                         },
                         url: {
-                            selector: ".s-product-image-container a",
+                            selector: "a[link-identifier]",
                             output: "@href"
                         }
                     }
@@ -42,6 +38,8 @@ class Scrapping {
             });
 
             const response = data.data;
+            if(typeof response == 'object') console.log(response)
+            else console.log(response.slice(5))
 
             const invs: any[] = [];
 
@@ -55,12 +53,11 @@ class Scrapping {
                         inv.link = item.link
                         inv.baseCurrency = "$";
                         inv.date = new Date();
-                        inv.url = `https://www.amazon.com${item.url}`
+                        inv.url = item.url
                         if (id == null) inv.category = search_word
                         inv.item = id
                     }
-                    if(inv.price>0)
-                        invs.push(inv);
+                    invs.push(inv);
                 }
             });
             return invs;

@@ -2,34 +2,39 @@ import axios from 'axios'
 class Scrapping {
     public PriceToStr(price: string) {
         if (!price) return 0
-        return parseFloat(price.slice(1).replace(",", ""))
+        price = price.replace(" ","").replace("+","")
+        if(price=="-") return 0
+        let i = 0
+        for(i=0;i<price.length;i++)
+            if(price[i]>='0' && price[i]<='9') break
+        return [price.slice(0,i),parseFloat(price.slice(i).replace(",",""))]
     }
     public async getScrappingData(search_word, id) {
-        const url = search_word.split(" ").join("+")
+        const url = search_word
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
-            url: `https://www.amazon.com/s?k=${url}`,
+            url: `https://www.bricklink.com/v2/search.page?q=${url}#T=A`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            // wait: 10000,
-            wait_for: ".s-main-slot",
+            wait: 500,
+            // wait_for: "#_idContentsTabA",
+            block_resources: false,
+            // block_ads: false,
+            // render_js: true,
             extract_rules: JSON.stringify({
                 data: {
-                    selector: '.s-main-slot div[data-component-type="s-search-result"]',
-                    type: "list",
+                    selector: '#_idContentsTabA>div[id*="_idItemTableFor"] tr.pspItemTypeContentsNew',
+                    type:"list",
                     output: {
-                        title: 'h2',
-                        price: {
-                            selector: 'div[data-cy="price-recipe"] .a-price>span',
-                            output: "text"
-                        },
+                        title: ".pspItemNameLink",
+                        price: "td:last-child",
                         link: {
-                            selector: ".s-product-image-container img",
+                            selector : "img",
                             output: "@src"
                         },
                         url: {
-                            selector: ".s-product-image-container a",
+                            selector: ".pspItemNameLink",
                             output: "@href"
                         }
                     }
@@ -42,20 +47,21 @@ class Scrapping {
             });
 
             const response = data.data;
-
+            // console.log(response)
             const invs: any[] = [];
 
             await response.map(async (item) => {
                 if (item) {
+                    const data = this.PriceToStr(item.price)
                     const inv: any = {
-                        price: this.PriceToStr(item.price),
+                        price: data[1],
                         title: item.title,
                     };
                     if (item.link) {
-                        inv.link = item.link
-                        inv.baseCurrency = "$";
+                        inv.link = `https:${item.link}`
+                        inv.baseCurrency = data[0];
                         inv.date = new Date();
-                        inv.url = `https://www.amazon.com${item.url}`
+                        inv.url = `https://www.bricklink.com${item.url}`
                         if (id == null) inv.category = search_word
                         inv.item = id
                     }

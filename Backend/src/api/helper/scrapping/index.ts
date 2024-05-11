@@ -27,8 +27,12 @@ import Whatnot from './whatnot'
 import Yamestore from './yamestore'
 import Fatherson from './fatherson'
 import Amazon from './amazon'
+import Bricklink from './bricklink'
+import Walmat from './walmat'
 
 class Scrapping {
+  bricklink = new Bricklink()
+  walmat = new Walmat()
   amazon = new Amazon()
   ebay = new EBay()
   scarce = new Scarce()
@@ -450,6 +454,10 @@ class Scrapping {
     console.log("fatherson complete")
     result.push(...(await this.amazon.getScrappingData(item, id)))
     console.log("amazon complete")
+    result.push(...(await this.bricklink.getScrappingData(item, id)))
+    console.log("bricklink complete")
+    result.push(...(await this.walmat.getScrappingData(item, id)))
+    console.log("walmat complete")
     result.forEach(element => {
       element.similarity = similarity(element.title, item) 
     });
