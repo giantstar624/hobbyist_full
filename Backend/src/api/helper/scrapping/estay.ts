@@ -1,11 +1,23 @@
 import axios from 'axios'
 class Scrapping {
     public PriceToStr(price: string) {
-        if (!price) return 0
-        return parseFloat(price.replace(",", ""))
+        price = price.replace(/ /g, "").replace(/,/g, "")
+        let i = 0
+        for (i = 0; i < price.length; i++)
+            if (price[i] >= '0' && price[i] <= '9')
+                break;
+        if (i == price.length)
+            return {
+                currency: 'No',
+                price: 0
+            }
+        return {
+            currency: price.slice(0, i),
+            price: parseFloat(price.slice(i))
+        }
     }
     public async getScrappingData(search_word, id) {
-        const url = search_word
+        const url = search_word.split(" ").map(val=>encodeURIComponent(val)).join(" ")
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
@@ -19,7 +31,7 @@ class Scrapping {
                     type: "list",
                     output: {
                         title: 'h3.v2-listing-card__title',
-                        currency_symbol: ".currency-symbol",
+                        baseCurrency: ".currency-symbol",
                         price: ".currency-value",
                         link: {
                             selector: "img[data-listing-card-listing-image]",
@@ -43,21 +55,10 @@ class Scrapping {
             const invs: any[] = [];
 
             await response.map(async (item) => {
-                if (item) {
-                    const inv: any = {
-                        price: this.PriceToStr(item.price),
-                        title: item.title,
-                    };
-                    if (item.link) {
-                        inv.link = item.link
-                        inv.baseCurrency = item.currency_symbol;
-                        inv.date = new Date();
-                        inv.url = item.url
-                        if (id == null) inv.category = search_word
-                        inv.item = id
-                    }
-                    invs.push(inv);
-                }
+                item.date = new Date();
+                if (id == null) item.category = search_word
+                item.item = id
+                invs.push(item);
             });
             return invs;
         } catch (error) {

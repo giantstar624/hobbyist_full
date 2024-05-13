@@ -171,28 +171,28 @@ class Scrapping {
   */
   public async saveScrapItem(category, item_title, itemId, user) {
 
-    const same_data = await this.scrappingBee(item_title, itemId);
-    same_data.forEach(x => x.similarity = similarity(x.title, item_title))
+    const scrapped_data = await this.scrappingBee(item_title, itemId);
+    // same_data.forEach(x => x.similarity = similarity(x.title, item_title))
 
     let good_items = []
     //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for (const aitem of same_data) {
+    for (const aitem of scrapped_data) {
       if (aitem.similarity >= 0.8) good_items.push(aitem)
     }
     if (good_items.length == 0) {
-      good_items = same_data.slice(0, 30)
+      good_items = scrapped_data.slice(0, 30)
     }
-    const similar_data = same_data.slice(good_items.length, same_data.length)
+    const similar_data = scrapped_data.slice(good_items.length, scrapped_data.length)
 
     const average = await this.getAveragePrice(good_items);
     const median = await this.getMedianPrice(good_items);
-    const { high, low } = await this.getHighLowPrice(same_data)
+    const { high, low } = await this.getHighLowPrice(scrapped_data)
 
     const createNewScrapItem = await Model.create({
       _itemId: itemId,
       _userId: user,
       similar_data: similar_data,
-      same_data: same_data,
+      same_data: scrapped_data,
       average,
       median,
       highest_price: high,
@@ -276,7 +276,7 @@ class Scrapping {
             // console.log(item.title)
             const data = await this.scrappingBee(item.title, item.item);
 
-            data.forEach(el => el.similarity = similarity(el.title, item.title))
+            // data.forEach(el => el.similarity = similarity(el.title, item.title))
 
             let same_data = data
             let good_items = []

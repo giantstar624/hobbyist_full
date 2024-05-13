@@ -359,7 +359,7 @@ export class ItemService {
     }
 
     //sort data by most similar
-    same_data.sort((a,b) => b.similarity - a.similarity)
+    // same_data.sort((a,b) => b.similarity - a.similarity)
 
     //first 
     let good_items = []

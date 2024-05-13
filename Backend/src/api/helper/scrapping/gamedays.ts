@@ -15,7 +15,7 @@ class Scrapping {
             wait_for: "body",
             extract_rules: JSON.stringify({
                 data: {
-                    selector: 'li.product',
+                    selector: '.productGrid li.product',
                     type: "list",
                     output: {
                         title: ".card-title",
@@ -38,7 +38,7 @@ class Scrapping {
             });
 
             const response = data.data;
-
+            console.log(response)
             const invs: any[] = [];
 
             await response.map(async (item) => {
