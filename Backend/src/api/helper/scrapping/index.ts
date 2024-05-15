@@ -186,7 +186,7 @@ class Scrapping {
 
     const average = await this.getAveragePrice(good_items);
     const median = await this.getMedianPrice(good_items);
-    const { high, low } = await this.getHighLowPrice(scrapped_data)
+    const { high, low } = await this.getHighLowPrice(good_items)
 
     const createNewScrapItem = await Model.create({
       _itemId: itemId,
@@ -360,61 +360,20 @@ class Scrapping {
     }
   };
 
-  public async getMedianPrice(items) {
-    if (!items) return null
+  public getMedianPrice(items) {
+    if (items) {
 
-    //use only items with high enough similarity
-    items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
-    let count = 0
-    const good_items = []
-    //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for (const item of items) {
-      count++
-      if (item.similarity >= 0.8) good_items.push(item)
-      else if (count <= 30) good_items.push(item)
-      else {
-        break
-      }
+      return _.sortBy(items.map((item) => parseFloat(item.price)))[Math.floor(items.length / 2)]
     }
-    // console.log('medd')
-    // console.log(_.sortBy(good_items.map((item) => parseFloat(item.price)))[Math.floor(good_items.length / 2)])
-    // good_items.forEach(x => delete x.url && delete x.date && delete x.link && delete x.item)
-    // console.log(good_items)
-
-    return _.sortBy(good_items.map((item) => parseFloat(item.price)))[Math.floor(good_items.length / 2)]
   }
-  //take similarity into account
-  public async getAveragePrice(items) {
-    items.sort((a, b) => b.similarity - a.similarity) //sort high similarity to low
-    let count = 0
-    let sum = 0
-    //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for (const item of items) {
-      count++
-      if (item.similarity >= 0.8) sum += parseFloat(item.price)
-      else if (count <= 30) sum += parseFloat(item.price)
-      else {
-        break
-      }
-    }
-    return sum / count
+  public getAveragePrice(items) {
+    if (items) return items.map((item) => parseFloat(item.price)).reduce((a, b) => a + b, 0) / items.length
   }
 
   public async getHighLowPrice(items) {
-    items.sort((a, b) => b.similarity - a.similarity)
-    const good_items = []
-    let count = 0
-    for (const item of items) {
-      count++
-      if (item.similarity >= 0.8) good_items.push(item)
-      else if (count <= 30) good_items.push(item)
-      else {
-        break
-      }
-    }
-    good_items.sort((a, b) => b.price - a.price)
-    const high = good_items[0].price
-    const low = good_items[good_items.length - 1].price
+    items.sort((a, b) => b.price - a.price)
+    const high = items[0].price
+    const low = items[items.length - 1].price
     return { low, high }
   }
 

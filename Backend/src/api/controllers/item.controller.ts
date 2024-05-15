@@ -20,7 +20,7 @@ const addItem = async (
     const addItem = await service.addItem(data);
     res.status(addItem.status).send(addItem);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -45,7 +45,7 @@ const scrapItem = async (
     const scrapItem = await service.saveScrapItem(data);
     res.status(scrapItem.status).send(scrapItem);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -65,7 +65,7 @@ const uploadImage = async (req: any, res: express.Response) => {
     const itemList = await service.imageUpload(data);
     res.status(itemList.status).send(itemList);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(500).send({
@@ -90,7 +90,7 @@ const itemList = async (
     const itemList = await service.itemList(data);
     res.status(201).send(itemList);
   } catch (error) {
-    logger.error(error.message);
+    // //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -111,7 +111,7 @@ const oneItem = async (
     const oneItem = await service.getOneItem({ item_id: req.params.id });
     res.status(201).send(oneItem);
   } catch (error) {
-    logger.error(error.message);
+    // //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -132,7 +132,7 @@ const removeItem = async (
     const removeItem = await service.removeItem({ item_id: req.params.id });
     res.status(201).send(removeItem);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -160,7 +160,7 @@ const editItem = async (
     const editItem = await service.editList(data);
     res.status(201).send(editItem);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -185,7 +185,7 @@ const addCategory = async (
     res.status(editItem.status).send(editItem);
 
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -207,7 +207,7 @@ const getCategory = async (
     res.status(getItem.status).send(getItem);
 
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -231,7 +231,7 @@ const getSimilarItems = async (
     res.status(getItem.status).send(getItem);
 
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({
@@ -258,7 +258,7 @@ const getDailyItems = async (
     const getItem = await service.getDailyItems(data);
     res.status(getItem.status).send(getItem);
   } catch (error) {
-    logger.error(error.message);
+    //logger.error(error.message);
     console.error(error);
 
     res.status(400).send({

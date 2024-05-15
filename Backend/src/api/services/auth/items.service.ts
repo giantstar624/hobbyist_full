@@ -448,9 +448,8 @@ export class ItemService {
       const findItems = await DailyItemModel.find({ _scrapId: itemId });
       console.log(findItems.length);
       const findItem: any = await ScrapModel.find({ _itemId: itemId })
-      const items = findItem[0]?.same_data
-      const average = this.getAveragePrice(items)
-      const median = this.getMedianPrice(items)
+      const average = findItem[0]?.average
+      const median = findItem[0]?.median
       const first_data = {
         itemId,
         average,
