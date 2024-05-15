@@ -17,7 +17,7 @@ class Scrapping {
         }
     }
     public async getScrappingData(search_word, id) {
-        const url = search_word.split(" ").map(val=>encodeURIComponent(val)).join("+")
+        const url = search_word.split(" ").map(val=>encodeURIComponent(val)).join(" ")
         const params = {
             api_key:
                 "DCXO8PT2BDINHZNQDJUMHLK9FYAKG3MDW9U4T1A4G7KNZ4IN7WNYA796GELUFA1KW9VQ7R9ZXSXN28IH",
