@@ -24,10 +24,10 @@ class Scrapping {
             url: `https://www.mercari.com/search/?keyword=${url}`,
             // Wait for there to be at least one
             // non-empty .event-tile element
-            wait_for: '.DesktopSearch__RightColumn-sc-68ebcf42-1',
+            wait_for: 'div[data-testid="SearchResults"],div[data-testid="ZeroStateSearch"]',
             extract_rules: JSON.stringify({
                 data: {
-                    selector: "div[data-itemprice]",
+                    selector: 'div[data-testid="SearchResults"] div[data-itemprice]',
                     type: "list",
                     output: {
                         title: ".ProductThumbWithMeta__EllipsisText-sc-3939de45-5",
@@ -49,8 +49,6 @@ class Scrapping {
                 params: params
             });
             const response = data.data;
-
-            // console.log(response)
 
             const invs: any[] = [];
 
