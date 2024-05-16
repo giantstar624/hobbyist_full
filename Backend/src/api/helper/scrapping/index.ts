@@ -418,8 +418,12 @@ class Scrapping {
     console.log("bricklink complete")
     result.push(...(await this.walmat.getScrappingData(item, id)))
     console.log("walmat complete")
-    result.forEach(element => {
-      element.similarity = similarity(element.title, item) 
+    const sim_data = await axios.post('http://localhost:8000/calculate-similarity',{
+      search_word: item,
+      products: result.map(val=>val.title)
+    })
+    result.forEach((element,index) => {
+      element.similarity = sim_data.data.data[index]
     });
     result.sort((a,b)=> b.similarity - a.similarity)
     return result.slice(0, 100)
