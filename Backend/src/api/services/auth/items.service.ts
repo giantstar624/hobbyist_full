@@ -325,71 +325,45 @@ export class ItemService {
     const getItem = await itemModel
       .findOne({ _id: item })
       .select("-_id");
-    
-      if(!getItem){
-        return {
-          status: 400,
-          success: false,
-          message: "No item id found",
-          data: null,
-        };
-      }
+
+    if (!getItem) {
+      return {
+        status: 400,
+        success: false,
+        message: "No item id found",
+        data: null,
+      };
+    }
 
     //get daily job for id
 
-    let same : any = await DailyItemModel.find({ _scrapId: item }).sort({createdAt: -1}).limit(1);
+    let dailyItem: any = await DailyItemModel.find({ _scrapId: item }).sort({ createdAt: -1 }).limit(1);
     let same_data = [], related_data = [];
-    let scrapeTime = same[0]?.createdAt;
-    if(same && same?.length>0){
-      if(same[0]?.same_data?.length>0) {
-        same_data = same[0].same_data
-      }
+    let scrapeTime = null;
+    if (dailyItem && dailyItem?.length > 0) {
+      same_data = dailyItem[0].same_data
+      related_data = dailyItem[0].similar_data
+      scrapeTime = dailyItem[0]?.createdAt
     }
-
-    let sim_items = null
-    if ((same_data.length == 0 )) {
-      sim_items = await ScrapModel.findOne({ _itemId: item }).select(
+    else {
+      const firstScrap = await ScrapModel.findOne({ _itemId: item }).select(
         "-_id -_userId -_itemId"
       );
+      same_data = firstScrap.same_data
+      related_data = firstScrap.similar_data
+      scrapeTime = firstScrap.createdAt;
     }
-    if (same_data.length==0 && sim_items){
-      same_data = sim_items.same_data
-      scrapeTime = sim_items.createdAt;
-
-    }
-
-    //sort data by most similar
-    // same_data.sort((a,b) => b.similarity - a.similarity)
-
-    //first 
-    let good_items = []
-    //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for(const item of same_data){
-      if(item.similarity >= 0.8) good_items.push(item)
-    }
-    if(good_items.length == 0){
-      good_items = same_data.slice(0,30)
-    }
-    good_items.sort((b,a) => b.price - a.price)
-
-
-
-    let similar_data = same_data.slice(good_items.length,same_data.length)
-    similar_data.sort((a,b) => b.price - a.price)
-
-    good_items = good_items.slice(0,100)
-    similar_data = similar_data.slice(0,100)
-
-    if (getItem && same_data.length!=0) {
+    same_data.sort((b, a) => b.price - a.price)
+    related_data.sort((a, b) => b.price - a.price)
+    if (getItem && same_data.length != 0) {
       return {
         status: 200,
         success: true,
         message: "Item found",
         data: {
           item: getItem,
-          same_data: good_items,
-          similar_data,
-          similar_item: similar_data,
+          same_data: same_data,
+          similar_item: related_data,
           scrapeTime,
         },
       };
@@ -407,7 +381,7 @@ export class ItemService {
         data: {
           item: getItem,
           same_data: [],
-          similar_data:[],
+          similar_data: [],
           similar_item: [],
         },
       };
@@ -526,7 +500,7 @@ export class ItemService {
 
     try {
 
-      const findScraps = await DailyItemModel.find({ _scrapId: id }).sort({createdAt: -1}).limit(1);
+      const findScraps = await DailyItemModel.find({ _scrapId: id }).sort({ createdAt: -1 }).limit(1);
       if (findScraps.length > 0) {
 
         const todayValue = findScraps
@@ -541,21 +515,21 @@ export class ItemService {
           const high = todayValue[0]?.highest_price
 
           // (not really necessary, but just in case)
-          if(!todayValue[0]?.average){
-            average = todayValue[0].reduce((a,b)=>a+b,0)
+          if (!todayValue[0]?.average) {
+            average = todayValue[0].reduce((a, b) => a + b, 0)
           }
 
 
           return {
             average: average ? average : '',
-            median : median ? median : '',
-            low : low ? low : '',
-            high : high ? high : '',
+            median: median ? median : '',
+            low: low ? low : '',
+            high: high ? high : '',
           }
         }
       } else {
 
-        const findItem: any = await ScrapModel.find({ _itemId: id }).sort({createdAt: -1}).limit(1)
+        const findItem: any = await ScrapModel.find({ _itemId: id }).sort({ createdAt: -1 }).limit(1)
 
         if (findItem) {
 
@@ -567,16 +541,16 @@ export class ItemService {
             const low = todayValue[0]?.lowest_price
             const high = todayValue[0]?.highest_price
 
-          // (not really necessary, but just in case)
-          if(!todayValue[0]?.average){
-            average = todayValue[0].reduce((a,b)=>a+b,0)
-          }
-  
+            // (not really necessary, but just in case)
+            if (!todayValue[0]?.average) {
+              average = todayValue[0].reduce((a, b) => a + b, 0)
+            }
+
             return {
               average: average ? average : '',
-              median : median ? median : '',
-              low : low ? low : '',
-              high : high ? high : '',
+              median: median ? median : '',
+              low: low ? low : '',
+              high: high ? high : '',
             }
           }
         }

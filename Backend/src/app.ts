@@ -37,11 +37,11 @@ app.use(routes);
 
 setInterval(async () => {
   console.log('running jobs')
-  await scrap.saveDailyJobSimilarItem()
-  await scrap.saveDailyJobSameItem()
+  await scrap.saveDailyJobforCategory()
+  await scrap.saveDailyJobForItem()
   console.log('cleaning')
-  await scrap.cleanDailyJobsCategories()
-  await scrap.cleanDailyJobsItems()
+  // await scrap.cleanDailyJobsCategories()
+  // await scrap.cleanDailyJobsItems()
 
 }, 86400000)
 
@@ -69,11 +69,11 @@ setInterval(async () => {
 
 app.get('/test-simi', async (req, res) => {
   // const x = await scrap.saveDailyJobSameItem()
-  await scrap.saveDailyJobSimilarItem()
+  await scrap.saveDailyJobforCategory()
   res.json('running')
 })
 app.get('/test-same', async (req, res) => {
-  await scrap.saveDailyJobSameItem()
+  await scrap.saveDailyJobForItem()
   // const x = await scrap.saveDailyJobSimilarItem()
   res.json('running')
 })

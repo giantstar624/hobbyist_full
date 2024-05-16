@@ -192,7 +192,7 @@ class Scrapping {
       _itemId: itemId,
       _userId: user,
       similar_data: similar_data,
-      same_data: scrapped_data,
+      same_data: good_items,
       average,
       median,
       highest_price: high,
@@ -201,7 +201,7 @@ class Scrapping {
 
     if (createNewScrapItem) return true;
   }
-  public async saveDailyJobSimilarItem() {
+  public async saveDailyJobforCategory() {
 
     // const data = await Model.find({});
 
@@ -246,7 +246,7 @@ class Scrapping {
       offset += 25000;
     });
   }
-  public async saveDailyJobSameItem() {
+  public async saveDailyJobForItem() {
 
     const items_data = await itemModel.find({});
     const same_data = items_data.map((item) => {
@@ -278,16 +278,16 @@ class Scrapping {
 
             // data.forEach(el => el.similarity = similarity(el.title, item.title))
 
-            let same_data = data
+            let whole_data = data
             let good_items = []
             //add all similarity > 0.8, then keep on adding until count is greater than 30
-            for (const aitem of same_data) {
+            for (const aitem of whole_data) {
               if (aitem.similarity >= 0.8) good_items.push(aitem)
             }
             if (good_items.length == 0) {
-              good_items = same_data.slice(0, 30)
+              good_items = whole_data.slice(0, 30)
             }
-
+            const similar_data = whole_data.slice(good_items.length)
             const average = await this.getAveragePrice(good_items);
 
             const median = await this.getMedianPrice(good_items);
@@ -299,7 +299,8 @@ class Scrapping {
               _scrapId: item.item,
               median: median,
               average: average,
-              same_data: data,
+              same_data: good_items,
+              similar_data: similar_data,
               lowest_price: low,
               highest_price: high,
             });
