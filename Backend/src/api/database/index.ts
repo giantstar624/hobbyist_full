@@ -10,7 +10,7 @@ const connectDatabase = async () => {
     let uri = process.env.DB_CONNECTION
     const testDB = process.env.TEST_DB || 'no';
     if(testDB == 'yes' && process.env.TEST_DB_CONNECTION) uri = process.env.TEST_DB_CONNECTION
-
+    console.log(uri)
    mongoose.connect(uri, {
         //   useNewUrlParser: true,
         //   useUnifiedTopology: true,
