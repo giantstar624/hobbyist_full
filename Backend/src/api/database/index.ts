@@ -1,21 +1,22 @@
-import  mongoose from "mongoose";
-import  dotenv from "dotenv";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import { logger } from '../config/logger';
 
-dotenv.config({ path: __dirname+ '/.env' });
+dotenv.config({ path: __dirname + '/.env' });
 
 
 const connectDatabase = async () => {
   try {
     let uri = process.env.DB_CONNECTION
     const testDB = process.env.TEST_DB || 'no';
-    if(testDB == 'yes' && process.env.TEST_DB_CONNECTION) uri = process.env.TEST_DB_CONNECTION
+    if (testDB == 'yes' && process.env.TEST_DB_CONNECTION) uri = process.env.TEST_DB_CONNECTION
+    console.log(__dirname+'/.env')
     console.log(uri)
-   mongoose.connect(uri, {
-        //   useNewUrlParser: true,
-        //   useUnifiedTopology: true,
-        //   useCreateIndex: true,
-      });
+    mongoose.connect(uri, {
+      //   useNewUrlParser: true,
+      //   useUnifiedTopology: true,
+      //   useCreateIndex: true,
+    });
     const connection = mongoose.connection;
     connection.once("open", (error, db) => {
       if (error) {
