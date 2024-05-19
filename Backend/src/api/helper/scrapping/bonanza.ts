@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { logger } from 'src/api/config/logger';
+import { logger } from '../../config/logger';
 class Scrapping {
     public PriceToStr(price: string) {
         price = price.split(' + ')[0]
