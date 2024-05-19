@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logger } from 'src/api/config/logger';
 class Scrapping {
     public PriceToStr(price: string) {
         price = price.replace(/ /g, "").replace(/,/g, "")
@@ -68,6 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
+            logger.error(`whatnot ${error.message}`)
             return []
         }
     }

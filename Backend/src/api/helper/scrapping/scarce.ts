@@ -72,7 +72,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
-            return invs.slice(0,100);
+            return invs
         } catch (error) {
             return []
         }

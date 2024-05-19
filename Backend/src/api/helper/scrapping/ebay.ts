@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logger } from 'src/api/config/logger';
 class Scrapping {
     public priceToStr(price) {
         if (price && price?.includes("to")) {
@@ -79,6 +80,7 @@ class Scrapping {
             });
             return invs.slice(1,101);
         } catch (error) {
+            logger.error(`ebay ${error.message}`)
             return []
         }
     }
