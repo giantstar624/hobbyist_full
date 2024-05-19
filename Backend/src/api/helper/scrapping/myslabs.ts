@@ -69,7 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`myslabs ${error.message}`)
+            logger.error(`myslabs ${error.response.data}`)
             return []
         }
     }

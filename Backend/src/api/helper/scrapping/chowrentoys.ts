@@ -70,7 +70,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`chowrentoy ${error.message}`)
+            logger.error(`chowrentoy ${error.response.data}`)
             return []
         }
     }

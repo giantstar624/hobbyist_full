@@ -71,7 +71,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`Adebooks ${error.message}`)
+            logger.error(`Adebooks ${error.response.data}`)
             return []
         }
     }

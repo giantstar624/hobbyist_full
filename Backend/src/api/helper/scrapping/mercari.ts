@@ -68,7 +68,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`mercari ${error.message}`)
+            logger.error(`mercari ${error.response.data}`)
             return []
         }
     }

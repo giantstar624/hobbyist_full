@@ -73,7 +73,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`Amazon ${error.message}`)
+            logger.error(`Amazon ${error.response.data}`)
             return []
         }
     }

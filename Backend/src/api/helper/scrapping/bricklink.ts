@@ -73,7 +73,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`bricklink ${error.message}`)
+            logger.error(`bricklink ${error.response.data}`)
             return []
         }
     }

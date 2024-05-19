@@ -69,7 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`fatherson ${error.message}`)
+            logger.error(`fatherson ${error.response.data}`)
             return []
         }
     }
