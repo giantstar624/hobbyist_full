@@ -69,7 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`steiner ${error.response.data}`)
+            logger.error(`steiner ${error.response.data.message}`)
             return []
         }
     }

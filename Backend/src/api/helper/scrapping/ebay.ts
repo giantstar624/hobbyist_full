@@ -80,7 +80,7 @@ class Scrapping {
             });
             return invs.slice(1,101);
         } catch (error) {
-            logger.error(`ebay ${error.response.data}`)
+            logger.error(`ebay ${error.response.data.message}`)
             return []
         }
     }

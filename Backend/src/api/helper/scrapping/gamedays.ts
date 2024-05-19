@@ -60,7 +60,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`gamedays ${error.response.data}`)
+            logger.error(`gamedays ${error.response.data.message}`)
             return []
         }
     }

@@ -71,7 +71,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`novelships ${error.response.data}`)
+            logger.error(`novelships ${error.response.data.message}`)
             return []
         }
     }
