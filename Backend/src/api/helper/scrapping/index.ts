@@ -426,7 +426,7 @@ class Scrapping {
       element.similarity = sim_data.data.data[index]
     });
     result.sort((a,b)=> b.similarity - a.similarity)
-    return result.slice(0, 100)
+    return result.slice(0, 200)
 }
 /*
   public async testing(id) {
