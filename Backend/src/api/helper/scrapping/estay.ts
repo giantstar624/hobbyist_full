@@ -63,7 +63,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`estay ${error.response.data.message}`)
+            logger.error(`estay ${error}`)
             return []
         }
     }

@@ -70,7 +70,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`Bonanza ${error.response.data.message}`)
+            logger.error(`Bonanza ${error}`)
             return []
         }
     }

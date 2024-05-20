@@ -69,7 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`brickowl ${error.response.data.message}`)
+            logger.error(`brickowl ${error}`)
             return []
         }
     }

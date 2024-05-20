@@ -69,7 +69,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`yamestore ${error.response.data.message}`)
+            logger.error(`yamestore ${error}`)
             return []
         }
     }
