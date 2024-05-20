@@ -67,6 +67,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`brickowl complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`brickowl ${error}`)

@@ -58,6 +58,7 @@ class Scrapping {
                     invs.push(inv);
                 }
             });
+            logger.info(`gamedays complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`gamedays ${error}`)

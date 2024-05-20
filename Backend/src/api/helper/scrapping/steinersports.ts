@@ -67,6 +67,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`steiner complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`steiner ${error}`)

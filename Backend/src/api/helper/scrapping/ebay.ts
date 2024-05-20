@@ -78,7 +78,9 @@ class Scrapping {
                     invs.push(inv);
                 }
             });
-            return invs.slice(1,101);
+
+            logger.info(`ebay complete with ${invs.length}`)
+            return invs.slice(1);
         } catch (error) {
             logger.error(`ebay ${error}`)
             return []

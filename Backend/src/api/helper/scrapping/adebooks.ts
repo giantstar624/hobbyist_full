@@ -69,6 +69,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`adebooks complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`Adebooks ${error}`)

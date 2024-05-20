@@ -71,6 +71,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`amazon complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`Amazon ${error}`)

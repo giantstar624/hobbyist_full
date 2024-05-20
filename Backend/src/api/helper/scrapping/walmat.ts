@@ -61,6 +61,7 @@ class Scrapping {
                     invs.push(inv);
                 }
             });
+            logger.info(`walmat complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`walmat ${error}`)

@@ -61,6 +61,7 @@ class Scrapping {
                 item.item = id
                 invs.push(item);
             });
+            logger.info(`estay complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`estay ${error}`)

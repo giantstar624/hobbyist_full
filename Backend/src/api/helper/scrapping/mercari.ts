@@ -66,6 +66,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`mercari complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`mercari ${error}`)

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { logger } from 'src/api/config/logger';
+import { error } from 'winston';
 class Scrapping {
     public PriceToStr(price: string) {
         price = price.replace(/ /g, "").replace(/,/g, "")
@@ -72,8 +74,10 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`scarce complete with ${invs.length}`)
             return invs
         } catch (error) {
+            logger.error(`scarce ${error}`)
             return []
         }
     }

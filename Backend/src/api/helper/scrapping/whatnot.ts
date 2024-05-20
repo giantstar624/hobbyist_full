@@ -67,6 +67,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`whatnot complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`whatnot ${error}`)

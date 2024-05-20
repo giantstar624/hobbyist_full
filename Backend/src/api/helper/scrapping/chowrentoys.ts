@@ -68,6 +68,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`chowrentoy complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`chowrentoy ${error}`)

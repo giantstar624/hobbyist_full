@@ -68,6 +68,7 @@ class Scrapping {
                     invs.push(item);
                 }
             });
+            logger.info(`vintage complete with ${invs.length}`)
             return invs;
         } catch (error) {
             logger.error(`vintage ${error}`)
