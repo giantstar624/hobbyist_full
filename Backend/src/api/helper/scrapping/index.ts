@@ -177,7 +177,7 @@ class Scrapping {
     let good_items = []
     //add all similarity > 0.8, then keep on adding until count is greater than 30
     for (const aitem of scrapped_data) {
-      if (aitem.similarity >= 0.8) good_items.push(aitem)
+      if (aitem.similarity >= 0.89) good_items.push(aitem)
     }
     if (good_items.length == 0) {
       good_items = scrapped_data.slice(0, 30)
@@ -282,7 +282,7 @@ class Scrapping {
             let good_items = []
             //add all similarity > 0.8, then keep on adding until count is greater than 30
             for (const aitem of whole_data) {
-              if (aitem.similarity >= 0.8) good_items.push(aitem)
+              if (aitem.similarity >= 0.89) good_items.push(aitem)
             }
             if (good_items.length == 0) {
               good_items = whole_data.slice(0, 30)
