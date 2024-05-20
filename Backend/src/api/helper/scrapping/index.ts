@@ -176,8 +176,8 @@ class Scrapping {
 
     let good_items = []
     //add all similarity > 0.8, then keep on adding until count is greater than 30
-    for (const aitem of scrapped_data) {
-      if (aitem.similarity >= 0.89) good_items.push(aitem)
+    for (let i = 0; i < scrapped_data.length; i++) {
+      if (scrapped_data[i].similarity >= 0.89) good_items.push(scrapped_data[i])
     }
     if (good_items.length == 0) {
       good_items = scrapped_data.slice(0, 30)
@@ -281,8 +281,9 @@ class Scrapping {
             let whole_data = data
             let good_items = []
             //add all similarity > 0.8, then keep on adding until count is greater than 30
-            for (const aitem of whole_data) {
-              if (aitem.similarity >= 0.89) good_items.push(aitem)
+
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].similarity >= 0.89) good_items.push(data[i])
             }
             if (good_items.length == 0) {
               good_items = whole_data.slice(0, 30)
@@ -418,84 +419,84 @@ class Scrapping {
     console.log("bricklink complete")
     result.push(...(await this.walmat.getScrappingData(item, id)))
     console.log("walmat complete")
-    const sim_data = await axios.post('http://localhost:8000/calculate-similarity',{
+    const sim_data = await axios.post('http://localhost:8000/calculate-similarity', {
       search_word: item,
-      products: result.map(val=>val.title)
+      products: result.map(val => val.title)
     })
-    result.forEach((element,index) => {
+    result.forEach((element, index) => {
       element.similarity = sim_data.data.data[index]
     });
-    result.sort((a,b)=> b.similarity - a.similarity)
+    result.sort((a, b) => b.similarity - a.similarity)
     return result.slice(0, 200)
-}
-/*
-  public async testing(id) {
-    console.log('testing...')
-    let items_data = await itemModel.find({});
-    console.log('asdfasdf')
-    console.log(items_data.length)
-    items_data = items_data.filter(x => x._id == id)
-    if (items_data.length > 1 || items_data.length == 0) {
-      console.log('fail asdfss')
-      console.log(items_data.length)
-      return
-    }
-    console.log('whhhhaaat')
-    // console.log(items_data)
-    // console.log(items_data[0])
-    const same_data = items_data.map((item) => {
-      let item_keywords = item.item_keywords.filter(x => x.toLowerCase() != item.item_title.toLocaleLowerCase())
-      let title = item.item_title
-      item_keywords.forEach(x => title += " " + x)
-      return {
-        title: title,
-        item: item._id,
-      }
-    })
-
-
-    const items = [];
-
-    for (let i = 0; i < same_data.length; i += 1) {
-      items.push(same_data.slice(i, i + 1));
-    }
-    let response;
-    let offset = 0;
-
-    _(items).each((item) => {
-      // setTimeout(() => {
-      item.forEach(async (item) => {
-
-        if (item.title !== 'Shop on eBay') {
-          // console.log(item.title)
-          const data = await this.scrappingBeeDaily(item.title, item.item);
-
-          // console.log(data)
-
-          data.forEach(el => el.similarity = similarity(el.title, item.title))
-
-          const average = await this.getAveragePrice(data);
-
-          const median = await this.getMedianPrice(data);
-
-          const { high, low } = await this.getHighLowPrice(data)
-
-          console.log('creating')
-          return await dailyJob.create({
-            _scrapId: item.item,
-            median: median,
-            average: average,
-            same_data: data,
-            lowest_price: low,
-            highest_price: high,
-          });
-        }
-        return response;
-      });
-    });
-    // offset += 25000;
-    // });
   }
-*/
+  /*
+    public async testing(id) {
+      console.log('testing...')
+      let items_data = await itemModel.find({});
+      console.log('asdfasdf')
+      console.log(items_data.length)
+      items_data = items_data.filter(x => x._id == id)
+      if (items_data.length > 1 || items_data.length == 0) {
+        console.log('fail asdfss')
+        console.log(items_data.length)
+        return
+      }
+      console.log('whhhhaaat')
+      // console.log(items_data)
+      // console.log(items_data[0])
+      const same_data = items_data.map((item) => {
+        let item_keywords = item.item_keywords.filter(x => x.toLowerCase() != item.item_title.toLocaleLowerCase())
+        let title = item.item_title
+        item_keywords.forEach(x => title += " " + x)
+        return {
+          title: title,
+          item: item._id,
+        }
+      })
+  
+  
+      const items = [];
+  
+      for (let i = 0; i < same_data.length; i += 1) {
+        items.push(same_data.slice(i, i + 1));
+      }
+      let response;
+      let offset = 0;
+  
+      _(items).each((item) => {
+        // setTimeout(() => {
+        item.forEach(async (item) => {
+  
+          if (item.title !== 'Shop on eBay') {
+            // console.log(item.title)
+            const data = await this.scrappingBeeDaily(item.title, item.item);
+  
+            // console.log(data)
+  
+            data.forEach(el => el.similarity = similarity(el.title, item.title))
+  
+            const average = await this.getAveragePrice(data);
+  
+            const median = await this.getMedianPrice(data);
+  
+            const { high, low } = await this.getHighLowPrice(data)
+  
+            console.log('creating')
+            return await dailyJob.create({
+              _scrapId: item.item,
+              median: median,
+              average: average,
+              same_data: data,
+              lowest_price: low,
+              highest_price: high,
+            });
+          }
+          return response;
+        });
+      });
+      // offset += 25000;
+      // });
+    }
+  */
 }
 export { Scrapping };
