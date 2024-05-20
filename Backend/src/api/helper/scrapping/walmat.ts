@@ -63,7 +63,7 @@ class Scrapping {
             });
             return invs;
         } catch (error) {
-            logger.error(`walmat ${error.response.data.message}`)
+            logger.error(`walmat ${error}`)
             return []
         }
     }
