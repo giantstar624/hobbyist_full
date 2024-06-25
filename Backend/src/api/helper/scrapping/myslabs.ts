@@ -7,7 +7,7 @@ class Scrapping {
         for (i = 0; i < price.length; i++)
             if (price[i] >= '0' && price[i] <= '9')
                 break;
-        if (i == price.length)
+        if (i == price.length || isNaN(parseFloat(price.slice(i))))
             return {
                 currency: 'No',
                 price: 0
